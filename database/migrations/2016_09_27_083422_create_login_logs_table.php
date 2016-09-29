@@ -18,6 +18,7 @@ class CreateLoginLogsTable extends Migration
             $table->string('ip', 15);
             $table->enum('type', ['login', 'logout']);
             $table->timestamp('at')->default(DB::raw('CURRENT_TIMESTAMP'));
+
             $table->primary('user_id');
         });
     }

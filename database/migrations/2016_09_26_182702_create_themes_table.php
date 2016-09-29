@@ -15,7 +15,7 @@ class CreateThemesTable extends Migration
     {
         Schema::create('themes', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('current_version_id');
+            $table->unsignedBigInteger('current_version_id')->nullable();
             $table->string('name');
             $table->string('author', 50);
             $table->timestamps();

@@ -21,6 +21,7 @@ class CreateUserThemesTable extends Migration
             $table->string('theme_key', 24)->nullable()->collation('utf8_bin');
             $table->boolean('activate')->default(false)->comment('用于的主题是否激活');
             $table->string('deactivate_reason')->nullable()->comment('如果失效, 注明失效原因');
+
             $table->primary(['user_id', 'theme_id']);
             $table->unique('theme_key');
         });

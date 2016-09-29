@@ -14,12 +14,13 @@ class CreateThemeDownloadsTable extends Migration
     public function up()
     {
         Schema::create('theme_downloads', function (Blueprint $table) {
-            $table->unsignedBigInteger('theme_id');
             $table->unsignedBigInteger('theme_version_id');
-            $table->unsignedBigInteger('user_id')->nullable();
+            $table->unsignedBigInteger('user_id');
             $table->timestamp('download_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->string('ip', '15');
-            $table->index('theme_id');
+            $table->timestamps();
+
+            $table->unique('theme_version_id');
         });
     }
 

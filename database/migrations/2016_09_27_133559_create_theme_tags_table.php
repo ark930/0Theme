@@ -16,6 +16,7 @@ class CreateThemeTagsTable extends Migration
         Schema::create('theme_tags', function (Blueprint $table) {
             $table->unsignedBigInteger('theme_id');
             $table->unsignedBigInteger('tag_id');
+
             $table->primary(['theme_id', 'tag_id']);
         });
     }
