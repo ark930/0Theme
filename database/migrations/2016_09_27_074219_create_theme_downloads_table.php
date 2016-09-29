@@ -15,6 +15,7 @@ class CreateThemeDownloadsTable extends Migration
     {
         Schema::create('theme_downloads', function (Blueprint $table) {
             $table->unsignedBigInteger('theme_id');
+            $table->unsignedBigInteger('theme_version_id');
             $table->unsignedBigInteger('user_id')->nullable();
             $table->timestamp('download_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->string('ip', '15');

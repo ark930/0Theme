@@ -16,7 +16,8 @@ class CreateTagsTable extends Migration
         Schema::create('tags', function (Blueprint $table) {
             $table->bigIncrements('user_id');
             $table->string('name', 100);
-            $table->enum('type', ['theme_category', 'theme_scene']);
+            $table->enum('type', ['theme_type', 'theme_category']);
+
         });
     }
 

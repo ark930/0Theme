@@ -19,10 +19,9 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->boolean('registered')->default(false)->comment('用户是否完成注册(点击邮箱中的确认邮件)');
-            $table->enum('class', ['basic', 'pro', 'lifetime'])->nullable()->comment('用户等级');
+            $table->enum('membership', ['basic', 'pro', 'lifetime'])->nullable()->comment('用户等级');
             $table->timestamp('pro_from')->nullable();
             $table->timestamp('pro_to')->nullable();
-            $table->string('app_key', 24)->unique()->collation('utf8_bin');
             $table->timestamp('register_at')->nullable();
             $table->timestamp('first_login_at')->nullable();
             $table->timestamp('last_login_at')->nullable();
