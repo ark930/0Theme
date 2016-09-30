@@ -20,7 +20,8 @@ class CreateThemeDownloadsTable extends Migration
             $table->string('ip', '15');
             $table->timestamps();
 
-            $table->unique('theme_version_id');
+            $table->index('theme_version_id');
+            $table->index('user_id');
         });
     }
 

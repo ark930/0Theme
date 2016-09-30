@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Eloquent\Model;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,10 +14,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-//        Model::unguard();
-
         // generate user data
-        $this->users = factory(App\Models\User::class, 5)->create();
+        $this->users = factory(App\Models\User::class, 20)->create();
 
         // generate tag data
         $this->tags = factory(App\Models\Tag::class, 20)->create();
@@ -44,21 +41,18 @@ class DatabaseSeeder extends Seeder
             }
 
             // generate theme download data
-//            $theme->versions()->each(function($themeVersion) {
-//                $themeDownload = factory(App\Models\ThemeDownload::class, random_int(2, 10))->make();
-//
-//                $user = $this->users->random();
-//                $user = \App\Models\User::find($user['id']);
-////                echo $user['id'];
-////                $user->downloads()->save($themeDownload);
-//                $themeDownload->user()->associate($user);
-////                $themeDownload->save();
-////                $themeVersion->downloads()->saveMany($themeDownload);
-//            });
+            $theme->versions()->each(function($themeVersion) {
+                $themeDownloads = factory(App\Models\ThemeDownload::class, random_int(2, 10))->make()->each(function($themeDownload) {
+                    // associate download to specific user
+                    $user = $this->users->random();
+                    $user = \App\Models\User::find($user['id']);
+                    $themeDownload->user()->associate($user);
+                });
+
+                // associate download to specific theme version
+                $themeVersion->downloads()->saveMany($themeDownloads);
+            });
         });
-
-
-//        Model::reguard();
 
     }
 }

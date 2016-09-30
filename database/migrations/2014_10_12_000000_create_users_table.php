@@ -25,6 +25,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('register_at')->nullable();
             $table->timestamp('first_login_at')->nullable();
             $table->timestamp('last_login_at')->nullable();
+            $table->string('last_login_ip', 15)->nullable();
             $table->unsignedBigInteger('inviter_id')->nullable()->comment('邀请人 user_id');
             $table->string('email_confirm_code', 24)->comment('确认邮件代码');
             $table->timestamps();

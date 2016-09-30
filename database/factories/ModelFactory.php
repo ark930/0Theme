@@ -20,6 +20,9 @@ $factory->define(App\Models\User::class, function (Faker\Generator $faker) {
         'password' => bcrypt('secret'),
         'registered' => random_int(0, 1),
         'register_at' => date('Y-m-d H:i-s'),
+        'first_login_at' => date('Y-m-d H:i-s'),
+        'last_login_at' => date('Y-m-d H:i-s'),
+        'last_login_ip' => $faker->ipv4,
         'membership' => $memberships[array_rand($memberships)],
         'email_confirm_code' => str_random(24),
     ];

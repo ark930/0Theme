@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateLoginLogsTable extends Migration
+class CreateLogsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateLoginLogsTable extends Migration
      */
     public function up()
     {
-        Schema::create('login_logs', function (Blueprint $table) {
+        Schema::create('logs', function (Blueprint $table) {
             $table->unsignedBigInteger('user_id');
             $table->string('ip', 15);
             $table->enum('type', ['login', 'logout']);
@@ -30,6 +30,6 @@ class CreateLoginLogsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('login_logs');
+        Schema::drop('logs');
     }
 }
