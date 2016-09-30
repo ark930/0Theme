@@ -25,6 +25,13 @@ class Theme extends Model
         return $this->belongsToMany('App\Models\Tag', 'theme_tags', 'theme_id', 'tag_id');
     }
 
+    public function users()
+    {
+        return $this->belongsToMany('App\Models\User', 'user_themes', 'user_id', 'theme_id')
+            ->withPivot('activate_at', 'expire_at', 'theme_key', 'is_activate', 'deactivate_reason')
+            ->withTimestamps();
+    }
+
     public function categoryTags()
     {
         return $this->tags->where('type', 'theme_category')->implode('name', '/');
