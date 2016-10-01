@@ -24,6 +24,7 @@ class CreateThemeVersionsTable extends Migration
             $table->boolean('has_free');
             $table->string('free_url')->nullable();
             $table->text('description');
+            $table->longText('changelog');
             $table->string('thumbnail');
             $table->string('thumbnail_tiny');
             $table->timestamp('release_at');

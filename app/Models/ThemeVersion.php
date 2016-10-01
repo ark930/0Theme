@@ -30,10 +30,34 @@ class ThemeVersion extends Model
 
     public function categoryTags()
     {
-        return $this->tags->where('type', 'theme_category')->implode('name', '/');
+        $tags = $this->tags->where('type', 'theme_category')->all();
+
+        $tagArray = [];
+        foreach ($tags as $tag) {
+            $tagArray[] = $tag['name'];
+        }
+
+        return $tagArray;
     }
 
     public function typeTags()
+    {
+        $tags = $this->tags->where('type', 'theme_type')->all();
+
+        $tagArray = [];
+        foreach ($tags as $tag) {
+            $tagArray[] = $tag['name'];
+        }
+
+        return $tagArray;
+    }
+
+    public function categoryTagsString()
+    {
+        return $this->tags->where('type', 'theme_category')->implode('name', '/');
+    }
+
+    public function typeTagsString()
     {
         return $this->tags->where('type', 'theme_type')->implode('name', '/');
     }

@@ -46,6 +46,7 @@ $factory->define(App\Models\ThemeVersion::class, function (Faker\Generator $fake
         'has_free' => random_int(0, 1),
         'free_url' => $faker->url,
         'description' => $faker->sentence,
+        'changelog' => $faker->sentence,
         'thumbnail' => $faker->url,
         'thumbnail_tiny' => $faker->url,
         'release_at' => date('Y-m-d H:i-s'),
