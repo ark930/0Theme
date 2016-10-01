@@ -12,7 +12,7 @@
 */
 
 $factory->define(App\Models\User::class, function (Faker\Generator $faker) {
-    $memberships = ['basic', 'pro', 'lifetime'];
+    $memberships = ['free', 'basic', 'pro', 'lifetime'];
 
     return [
         'name' => $faker->name,
@@ -33,24 +33,24 @@ $factory->define(App\Models\User::class, function (Faker\Generator $faker) {
 $factory->define(App\Models\Theme::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->name,
-        'author' => $faker->name,
     ];
 });
 
 $factory->define(App\Models\ThemeVersion::class, function (Faker\Generator $faker) {
     return [
         'author' => $faker->name,
+        'sha1' => $faker->sha1,
         'version' => '1.0.1',
+        'requirements' => $faker->sentence,
+        'document_url' => $faker->url,
+        'has_free' => random_int(0, 1),
+        'free_url' => $faker->url,
         'description' => $faker->sentence,
-        'logo' => $faker->url,
+        'thumbnail' => $faker->url,
+        'thumbnail_tiny' => $faker->url,
         'release_at' => date('Y-m-d H:i-s'),
-        'demo_url' => $faker->url,
-        'lite_url' => $faker->url,
-        'content' => $faker->sentence,
-        'requirement' => $faker->sentence,
-        'premium_store_at' => $faker->url,
-        'premium_store_type' => 'local',
-        'premium_sha1' => $faker->sha1,
+        'store_at' => $faker->url,
+        'store_type' => 'local',
     ];
 });
 
@@ -67,5 +67,12 @@ $factory->define(App\Models\ThemeDownload::class, function (Faker\Generator $fak
     return [
         'download_at' => date('Y-m-d H:i-s'),
         'ip' => $faker->ipv4,
+    ];
+});
+
+$factory->define(App\Models\ThemeVersionShowcase::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->word,
+        'title' => $faker->sentence,
     ];
 });

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateThemesTable extends Migration
+class CreateThemeVersionShowcasesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateThemesTable extends Migration
      */
     public function up()
     {
-        Schema::create('themes', function (Blueprint $table) {
+        Schema::create('theme_version_showcases', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('current_version_id')->nullable();
+            $table->unsignedBigInteger('theme_version_id');
             $table->string('name');
-            $table->timestamps();
+            $table->string('title');
         });
     }
 
@@ -28,6 +28,6 @@ class CreateThemesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('themes');
+        Schema::drop('theme_version_showcases');
     }
 }
