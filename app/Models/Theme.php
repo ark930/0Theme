@@ -27,16 +27,6 @@ class Theme extends Model
             ->withTimestamps();
     }
 
-    public function categoryTags()
-    {
-        return $this->currentVersion->tags->where('type', 'theme_category')->implode('name', '/');
-    }
-
-    public function typeTags()
-    {
-        return $this->currentVersion->tags->where('type', 'theme_type')->implode('name', '/');
-    }
-
     public function tagsCount()
     {
         $tags = $this->tags;
