@@ -20,11 +20,6 @@ class Theme extends Model
         return $this->hasMany('App\Models\ThemeVersion');
     }
 
-    public function tags()
-    {
-        return $this->belongsToMany('App\Models\Tag', 'theme_tags', 'theme_id', 'tag_id');
-    }
-
     public function users()
     {
         return $this->belongsToMany('App\Models\User', 'user_themes', 'user_id', 'theme_id')
@@ -34,12 +29,12 @@ class Theme extends Model
 
     public function categoryTags()
     {
-        return $this->tags->where('type', 'theme_category')->implode('name', '/');
+        return $this->currentVersion->tags->where('type', 'theme_category')->implode('name', '/');
     }
 
     public function typeTags()
     {
-        return $this->tags->where('type', 'theme_type')->implode('name', '/');
+        return $this->currentVersion->tags->where('type', 'theme_type')->implode('name', '/');
     }
 
     public function tagsCount()

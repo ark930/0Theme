@@ -8,9 +8,9 @@ class Tag extends Model
 {
     //
 
-    public function themes()
+    public function themeVersions()
     {
-        return $this->belongsToMany('App\Models\Theme', 'theme_tags', 'theme_id', 'tag_id');
+        return $this->belongsToMany('App\Models\ThemeVersion', 'theme_version_tags', 'theme_version_id', 'tag_id');
     }
 
 }
