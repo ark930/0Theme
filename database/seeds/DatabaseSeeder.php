@@ -15,7 +15,9 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // generate user data
-        $this->users = factory(App\Models\User::class, 30)->create();
+        $this->users = factory(App\Models\User::class, 30)->create()->each(function($user) {
+            $user->orders()->saveMany(factory(App\Models\Order::class, rand(2, 5))->make());
+        });
 
         // generate tag data
         $this->tags = factory(App\Models\Tag::class, 20)->create();
@@ -64,11 +66,17 @@ class DatabaseSeeder extends Seeder
                 $randomUser = $user->pull($j);
                 $theme->users()->attach($randomUser, [
                     'activate_at' =>  date('Y-m-d H:i-s'),
-                    'expire_at' => date('Y-m-d H:i-s'),
-                    'theme_key' => str_random(24),
-                    'is_activate' => rand(0, 1),
+                    'basic_expire_at' => date('Y-m-d H:i-s'),
+                    'theme_key' => str_random(15),
+                    'is_deactivate' => rand(0, 1),
                     'deactivate_reason' => 'deactivate_reason',
                 ]);
+
+                for($k = 0; $k < rand(1, 10); $k++) {
+                    $theme->userActiveWebsites()->attach($randomUser, [
+                        'website_domain' =>  'www.' . str_random(5). '.com',
+                    ]);
+                }
             }
         });
 

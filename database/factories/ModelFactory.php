@@ -18,7 +18,7 @@ $factory->define(App\Models\User::class, function (Faker\Generator $faker) {
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
         'password' => bcrypt('secret'),
-        'registered' => random_int(0, 1),
+        'registered' => rand(0, 1),
         'membership' => $memberships[array_rand($memberships)],
         'pro_from' => date('Y-m-d H:i-s'),
         'pro_to' => date('Y-m-d H:i-s'),
@@ -43,7 +43,7 @@ $factory->define(App\Models\ThemeVersion::class, function (Faker\Generator $fake
         'version' => '1.0.1',
         'requirements' => $faker->sentence,
         'document_url' => $faker->url,
-        'has_free' => random_int(0, 1),
+        'has_free' => rand(0, 1),
         'free_url' => $faker->url,
         'description' => $faker->sentence,
         'changelog' => $faker->sentence,
@@ -75,5 +75,20 @@ $factory->define(App\Models\ThemeVersionShowcase::class, function (Faker\Generat
     return [
         'name' => $faker->word,
         'title' => $faker->sentence,
+    ];
+});
+
+$factory->define(App\Models\Order::class, function (Faker\Generator $faker) {
+    $status = ['unpay', 'paid', 'refunded'];
+
+    return [
+        'order_no' => str_random(10),
+        'payment_type' => 'paypal',
+        'payment_id' => rand(10000, 100000),
+        'price' => rand(100, 10000) / 100,
+        'pay_amount' => rand(100, 10000) / 100,
+        'paid_amount' => rand(100, 10000) / 100,
+        'refund_amount' => rand(100, 10000) / 100,
+        'status' => $status[array_rand($status)],
     ];
 });

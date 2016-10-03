@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateLogsTable extends Migration
+class CreateUserThemeSitesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,11 @@ class CreateLogsTable extends Migration
      */
     public function up()
     {
-        Schema::create('logs', function (Blueprint $table) {
+        Schema::create('user_theme_sites', function (Blueprint $table) {
             $table->unsignedBigInteger('user_id');
-            $table->string('ip', 15);
-            $table->enum('type', ['login', 'logout', 'membership', 'activate_theme']);
-            $table->timestamp('at')->default(DB::raw('CURRENT_TIMESTAMP'));
-            $table->string('content');
-
-            $table->primary('user_id');
+            $table->unsignedBigInteger('theme_id');
+            $table->string('website_domain')->comment('用户激活主题的网站域名');
+            $table->timestamps();
         });
     }
 
@@ -31,6 +28,6 @@ class CreateLogsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('logs');
+        Schema::drop('user_theme_sites');
     }
 }
