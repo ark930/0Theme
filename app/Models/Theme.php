@@ -23,8 +23,15 @@ class Theme extends Model
     public function users()
     {
         return $this->belongsToMany('App\Models\User', 'user_themes', 'user_id', 'theme_id')
-            ->withPivot('activate_at', 'expire_at', 'theme_key', 'is_activate', 'deactivate_reason')
-            ->withTimestamps();
+                    ->withPivot('theme_key', 'activate_at', 'basic_expire_at', 'is_deactivate', 'deactivate_reason')
+                    ->withTimestamps();
+    }
+
+    public function userActiveWebsites()
+    {
+        return $this->belongsToMany('App\Models\User', 'user_theme_sites', 'user_id', 'theme_id')
+                    ->withPivot('website_domain')
+                    ->withTimestamps();
     }
 
     public function tagsCount()

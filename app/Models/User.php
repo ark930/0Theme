@@ -37,7 +37,14 @@ class User extends Model
     public function themes()
     {
         return $this->belongsToMany('App\Models\Theme', 'user_themes', 'user_id', 'theme_id')
-            ->withPivot('activate_at', 'expire_at', 'theme_key', 'is_activate', 'deactivate_reason')
+            ->withPivot('theme_key', 'activate_at', 'basic_expire_at', 'is_deactivate', 'deactivate_reason')
             ->withTimestamps();
+    }
+
+    public function themeActiveWebsites()
+    {
+        return $this->belongsToMany('App\Models\Theme', 'user_theme_sites', 'user_id', 'theme_id')
+                    ->withPivot('website_domain')
+                    ->withTimestamps();
     }
 }
