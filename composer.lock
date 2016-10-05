@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "20529a3872d152036e02a739df76bf26",
-    "content-hash": "8a34131f74ba1a40183605ce8f2f0f5f",
+    "hash": "34bfe0ae48b88e86c98dcb537b2680c8",
+    "content-hash": "7b6a39b4ccb260c29ccdda870e2a8cad",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -955,6 +955,55 @@
                 "random"
             ],
             "time": "2016-04-03 06:00:07"
+        },
+        {
+            "name": "paypal/rest-api-sdk-php",
+            "version": "1.8.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/paypal/PayPal-PHP-SDK.git",
+                "reference": "decc9e45c2bb9898d54e179871083536bdda215f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://packagist.phpcomposer.com/files/paypal/PayPal-PHP-SDK/decc9e45c2bb9898d54e179871083536bdda215f.zip",
+                "reference": "decc9e45c2bb9898d54e179871083536bdda215f",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "php": ">=5.3.0",
+                "psr/log": "^1.0.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "PayPal": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache2"
+            ],
+            "authors": [
+                {
+                    "name": "PayPal",
+                    "homepage": "https://github.com/paypal/rest-api-sdk-php/contributors"
+                }
+            ],
+            "description": "PayPal's PHP SDK for REST APIs",
+            "homepage": "http://paypal.github.io/PayPal-PHP-SDK/",
+            "keywords": [
+                "payments",
+                "paypal",
+                "rest",
+                "sdk"
+            ],
+            "time": "2016-09-29 16:48:58"
         },
         {
             "name": "psr/http-message",
