@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
+use App\Notifications\ResetPasswordNotification;
+use App\Models\User;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -36,7 +40,8 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+        $this->middleware('guest', ['except' => ['emailConfirmPage', 'emailConfirmWithCode']]);
+        $this->middleware('auth', ['only' => ['emailConfirmPage']]);
     }
 
     /**
@@ -66,6 +71,47 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            'email_confirm_code' => strtolower(str_random(30)),
         ]);
+    }
+
+    public function emailConfirmPage()
+    {
+        $user = Auth::user();
+        if(!empty($user) && $user->registered) {
+            return redirect($this->redirectTo);
+        }
+
+        return 'emailConfirmPage';
+    }
+
+    public function emailConfirmWithCode($confirm_code)
+    {
+        $user = User::where('email_confirm_code', $confirm_code)->first();
+
+        if(empty($user)) {
+            return 'illegal url';
+        }
+        else if($user->registered) {
+            return 'registered';
+        } else {
+            $user->registered = true;
+            $user->save();
+
+            return 'confirmed';
+        }
+    }
+
+    public function register(Request $request)
+    {
+        $this->validator($request->all())->validate();
+
+        event(new Registered($user = $this->create($request->all())));
+
+        $this->guard()->login($user);
+
+        $user->notify(new ResetPasswordNotification());
+
+        return redirect($this->redirectPath());
     }
 }
