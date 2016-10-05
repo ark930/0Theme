@@ -47,4 +47,16 @@ class User extends Model
                     ->withPivot('website_domain')
                     ->withTimestamps();
     }
+
+    public function activeWebsites($theme_id)
+    {
+        $activeWebsites = $this->themeActiveWebsites->where('id', $theme_id)->all();
+
+        $domains = [];
+        foreach ($activeWebsites as $activeWebsite) {
+            $domains[] = $activeWebsite->pivot->website_domain;
+        }
+
+        return $domains;
+    }
 }

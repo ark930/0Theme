@@ -14,6 +14,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        // generate admin user data
+        $this->users = factory(App\Models\AdminUser::class, 1)->create();
+
         // generate user data
         $this->users = factory(App\Models\User::class, 30)->create()->each(function($user) {
             $user->orders()->saveMany(factory(App\Models\Order::class, rand(2, 5))->make());

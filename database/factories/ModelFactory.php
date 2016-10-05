@@ -11,6 +11,14 @@
 |
 */
 
+$factory->define(App\Models\AdminUser::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->name,
+        'email' => $faker->unique()->safeEmail,
+        'password' => bcrypt('secret'),
+    ];
+});
+
 $factory->define(App\Models\User::class, function (Faker\Generator $faker) {
     $memberships = ['free', 'basic', 'pro', 'lifetime'];
 
