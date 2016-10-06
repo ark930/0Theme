@@ -9,6 +9,11 @@ class User extends Authenticatable
 {
     use Notifiable;
 
+    const MEMBERSHIP_FREE = 'membership_free';
+    const MEMBERSHIP_BASIC = 'membership_basic';
+    const MEMBERSHIP_PRO = 'membership_pro';
+    const MEMBERSHIP_LIFETIME = 'membership_lifetime';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -27,10 +32,6 @@ class User extends Authenticatable
         'password',
     ];
 
-    protected $casts = [
-        'registered' => 'boolean',
-    ];
-
     public function downloads()
     {
         return $this->hasMany('App\Models\ThemeDownload');
@@ -44,7 +45,7 @@ class User extends Authenticatable
     public function themes()
     {
         return $this->belongsToMany('App\Models\Theme', 'user_themes', 'user_id', 'theme_id')
-            ->withPivot('theme_key', 'activate_at', 'basic_expire_at', 'is_deactivate', 'deactivate_reason')
+            ->withPivot('is_deactivate', 'deactivate_reason')
             ->withTimestamps();
     }
 

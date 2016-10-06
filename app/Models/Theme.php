@@ -6,10 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Theme extends Model
 {
-    protected $fillable = [
-        'name', 'author',
-    ];
-
     public function currentVersion()
     {
         return $this->belongsTo('App\Models\ThemeVersion', 'current_version_id');
@@ -23,7 +19,7 @@ class Theme extends Model
     public function users()
     {
         return $this->belongsToMany('App\Models\User', 'user_themes', 'user_id', 'theme_id')
-                    ->withPivot('theme_key', 'activate_at', 'basic_expire_at', 'is_deactivate', 'deactivate_reason')
+                    ->withPivot('is_deactivate', 'deactivate_reason')
                     ->withTimestamps();
     }
 
