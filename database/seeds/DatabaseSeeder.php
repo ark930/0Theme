@@ -68,9 +68,6 @@ class DatabaseSeeder extends Seeder
                 $j = rand(0, $this->users->count() -1 );
                 $randomUser = $user->pull($j);
                 $theme->users()->attach($randomUser, [
-                    'activate_at' =>  date('Y-m-d H:i-s'),
-                    'basic_expire_at' => date('Y-m-d H:i-s'),
-                    'theme_key' => str_random(15),
                     'is_deactivate' => rand(0, 1),
                     'deactivate_reason' => 'deactivate_reason',
                 ]);
