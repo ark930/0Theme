@@ -23,11 +23,18 @@ Route::get('register/confirm/{confirm_code}', 'Auth\RegisterController@emailConf
 
 Route::get('/home', 'HomeController@index');
 
-Route::group(['middleware' => 'auth'], function() {
+Route::group(['middleware' => []], function() {
 //    Route::get('/overview', 'MainController@overview');
 //    Route::get('/designer', 'MainController@designer');
 //    Route::get('/artist', 'MainController@artist');
 //    Route::get('/photographer', 'MainController@photographer');
 //    Route::get('/blogger', 'MainController@blogger');
 //    Route::get('/startup', 'MainController@startup');
+
+    Route::get('/payment/create', 'PaymentController@create');
+    Route::get('/payment/confirm', 'PaymentController@confirm');
+    Route::get('/payment/refund', 'PaymentController@refund');
+    Route::get('/payment/sale', 'PaymentController@getSale');
+
+    Route::get('/themes/download', 'ThemeController@download');
 });

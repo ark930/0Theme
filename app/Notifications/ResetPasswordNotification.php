@@ -7,7 +7,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class ResetPasswordNotification extends Notification
+class ResetPasswordNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -45,7 +45,7 @@ class ResetPasswordNotification extends Notification
         return (new MailMessage)
             ->greeting('Hello world')
             ->line('The introduction to the notification.')
-            ->action('Notification Action', $confirmUrl)
+            ->action('Confirm', $confirmUrl)
             ->line('Thank you for using our application!');
     }
 

@@ -67,12 +67,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-            'email_confirm_code' => strtolower(str_random(30)),
-        ]);
+        return User::newUser($data);
     }
 
     public function emailConfirmPage()
@@ -105,11 +100,9 @@ class RegisterController extends Controller
     public function register(Request $request)
     {
         $this->validator($request->all())->validate();
-
         event(new Registered($user = $this->create($request->all())));
-
+        $user->saveRegisterInfo($request->ip());
         $this->guard()->login($user);
-
         $user->notify(new ResetPasswordNotification());
 
         return redirect($this->redirectPath());
