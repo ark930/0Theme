@@ -18,7 +18,7 @@ class CreateUsersTable extends Migration
             $table->string('name')->unique()->nullble()->comment('用户名');
             $table->string('email')->unique();
             $table->string('password');
-            $table->char('email_confirm_code', 30)->unique()->nullable()->comment('确认邮件代码');
+            $table->char('register_confirm_code', 30)->unique()->nullable()->comment('发往邮箱的注册确认代码');
             $table->rememberToken();
             $table->enum('membership', ['free', 'basic', 'pro', 'lifetime'])->default('free')->comment('用户等级');
             $table->char('secret_key', 30)->unique()->nullable()->comment('用户更新主题时需要用到的密钥');

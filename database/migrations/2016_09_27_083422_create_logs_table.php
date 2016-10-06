@@ -14,13 +14,13 @@ class CreateLogsTable extends Migration
     public function up()
     {
         Schema::create('logs', function (Blueprint $table) {
-            $table->unsignedBigInteger('user_id');
-            $table->string('ip', 15);
-            $table->enum('type', ['login', 'logout', 'membership', 'activate_theme']);
-            $table->timestamp('at')->default(DB::raw('CURRENT_TIMESTAMP'));
-            $table->string('content');
-
-            $table->primary('user_id');
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->string('ip', 15)->nullable();
+            $table->string('type', 50);
+            $table->timestamp('at')->nullable();
+            $table->text('message')->nullable();
+            $table->timestamps();
         });
     }
 

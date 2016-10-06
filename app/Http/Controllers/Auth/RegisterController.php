@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Notifications\ResetPasswordNotification;
+use App\Events\LogEvent;
+use App\Notifications\ConfirmRegisterNotification;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
@@ -80,19 +81,18 @@ class RegisterController extends Controller
         return 'emailConfirmPage';
     }
 
-    public function emailConfirmWithCode($confirm_code)
+    public function emailConfirmWithCode(Request $request, $confirm_code)
     {
-        $user = User::where('email_confirm_code', $confirm_code)->first();
+        $user = User::where('register_confirm_code', $confirm_code)->first();
 
         if(empty($user)) {
             return 'illegal url';
         }
-        else if($user->registered) {
+        else if(!empty($user['register_at'])) {
             return 'registered';
         } else {
-            $user->registered = true;
-            $user->save();
-
+            $user->saveRegisterInfo($request->ip());
+            event(new LogEvent($request->ip(), $user, LogEvent::REGISTER_CONFIRM));
             return 'confirmed';
         }
     }
@@ -100,10 +100,13 @@ class RegisterController extends Controller
     public function register(Request $request)
     {
         $this->validator($request->all())->validate();
+
+        // trigger event
         event(new Registered($user = $this->create($request->all())));
-        $user->saveRegisterInfo($request->ip());
+        event(new LogEvent($request->ip(), $user, LogEvent::REGISTER));
+        $user->notify(new ConfirmRegisterNotification());
+
         $this->guard()->login($user);
-        $user->notify(new ResetPasswordNotification());
 
         return redirect($this->redirectPath());
     }

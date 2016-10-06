@@ -7,7 +7,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class ResetPasswordNotification extends Notification implements ShouldQueue
+class ConfirmRegisterNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -40,10 +40,12 @@ class ResetPasswordNotification extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
+        $confirmUrl = route('register_confirm_with_code', $notifiable->register_confirm_code);
+
         return (new MailMessage)
             ->greeting('Hello world')
             ->line('The introduction to the notification.')
-            ->action('Confirm', 'http://163.com')
+            ->action('Confirm', $confirmUrl)
             ->line('Thank you for using our application!');
     }
 

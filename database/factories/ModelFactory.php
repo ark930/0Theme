@@ -36,7 +36,7 @@ $factory->define(App\Models\User::class, function (Faker\Generator $faker) {
         'first_login_at' => date('Y-m-d H:i-s'),
         'last_login_at' => date('Y-m-d H:i-s'),
         'last_login_ip' => $faker->ipv4,
-        'email_confirm_code' => str_random(24),
+        'register_confirm_code' => str_random(24),
     ];
 });
 
