@@ -30,6 +30,11 @@ class Theme extends Model
                     ->withTimestamps();
     }
 
+    public function product()
+    {
+        return $this->belongsTo('App\Models\Product');
+    }
+
     public function tagsCount()
     {
         $tags = $this->tags;

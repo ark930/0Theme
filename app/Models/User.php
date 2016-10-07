@@ -74,7 +74,7 @@ class User extends Authenticatable
             if($this['pro_to'] >= time()) {
                 return true;
             } else {
-                $this->membershipToFree();
+                $this->membershipTo(self::MEMBERSHIP_FREE);
             }
         } else if($this['membership'] === self::MEMBERSHIP_LIFETIME) {
             return true;
@@ -89,7 +89,7 @@ class User extends Authenticatable
             if($this['basic_to'] >= time()) {
                 return true;
             } else {
-                $this->membershipToFree();
+                $this->membershipTo(self::MEMBERSHIP_FREE);
             }
         }
 
@@ -137,6 +137,12 @@ class User extends Authenticatable
         $this->save();
     }
 
+    public function membershipTo($membership)
+    {
+        $this['membership'] = $membership;
+        $this->save();
+    }
+
     public static function newUser($data)
     {
         $user = new User();
@@ -147,12 +153,6 @@ class User extends Authenticatable
         $user->save();
 
         return $user;
-    }
-
-    private function membershipToFree()
-    {
-        $this['membership'] = self::MEMBERSHIP_FREE;
-        $this->save();
     }
 
 }
