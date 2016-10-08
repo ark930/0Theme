@@ -57,6 +57,20 @@ class User extends Authenticatable
                     ->withTimestamps();
     }
 
+    public function isRegistered()
+    {
+        return !empty($this['register_at']) ? true : false;
+    }
+
+    public function isFreeUser()
+    {
+        return !in_array($this['membership'], [
+            self::MEMBERSHIP_BASIC,
+            self::MEMBERSHIP_PRO,
+            self::MEMBERSHIP_LIFETIME,
+        ]);
+    }
+
     public function activeWebsites($theme_id)
     {
         $activeWebsites = $this->themeActiveWebsites->where('id', $theme_id)->all();

@@ -58,21 +58,22 @@ class Paypal
 
         $transaction = new Transaction();
         $transaction->setAmount($amount)
-                    ->setItemList($itemList)
-                    ->setDescription("Payment description")
-                    ->setInvoiceNumber(uniqid())
-//                    ->setPurchaseUnitReferenceId($orderNo. '-reference-id')
+            ->setItemList($itemList)
+            ->setDescription("Payment description")
+            ->setInvoiceNumber(uniqid())
+//            ->setPurchaseUnitReferenceId($orderNo. '-reference-id')
         ;
 
         $redirectUrls = new RedirectUrls();
         $redirectUrls->setReturnUrl("$baseUrl/payment/confirm?success=true")
-                     ->setCancelUrl("$baseUrl/payment/confirm?success=false");
+            ->setCancelUrl("$baseUrl/payment/confirm?success=false");
 
         $payment = new Payment();
         $payment->setIntent("sale")
-                ->setPayer($payer)
-                ->setRedirectUrls($redirectUrls)
-                ->setTransactions(array($transaction));
+            ->setPayer($payer)
+            ->setRedirectUrls($redirectUrls)
+            ->setNoteToPayer('一些对产品的介绍 你可以看到吗 哈哈哈哈哈哈哈哈哈哈')
+            ->setTransactions(array($transaction));
 
         try {
             $payment->create($this->apiContext);

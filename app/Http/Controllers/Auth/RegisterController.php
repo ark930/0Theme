@@ -32,7 +32,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/plan';
+    protected $redirectTo = '/home';
 
     /**
      * Create a new controller instance.
@@ -41,8 +41,12 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest', ['except' => ['emailConfirmPage', 'emailConfirmWithCode']]);
-        $this->middleware('auth', ['only' => ['emailConfirmPage']]);
+//        $this->middleware('guest', ['except' => ['registerConfirmPage', 'registerConfirmWithCode']]);
+    }
+
+    public function showRegistrationForm()
+    {
+        return view('signup');
     }
 
     /**
@@ -54,9 +58,9 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|max:255',
+            'name' => 'required|max:255|unique:users',
             'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|min:6|confirmed',
+            'password' => 'required|min:6',
         ]);
     }
 
@@ -71,17 +75,17 @@ class RegisterController extends Controller
         return User::newUser($data);
     }
 
-    public function emailConfirmPage()
+    public function registerConfirmPage()
     {
         $user = Auth::user();
-        if(!empty($user) && $user->registered) {
+        if(!empty($user) && $user->isRegistered()) {
             return redirect($this->redirectTo);
         }
 
-        return 'emailConfirmPage';
+        return view('sendemailsuccess');
     }
 
-    public function emailConfirmWithCode(Request $request, $confirm_code)
+    public function registerConfirmWithCode(Request $request, $confirm_code)
     {
         $user = User::where('register_confirm_code', $confirm_code)->first();
 
@@ -93,7 +97,11 @@ class RegisterController extends Controller
         } else {
             $user->saveRegisterInfo($request->ip());
             event(new LogEvent($request->ip(), $user, LogEvent::REGISTER_CONFIRM));
-            return 'confirmed';
+
+            $this->guard()->logout();
+            $request->session()->flush();
+            $request->session()->regenerate();
+            return redirect('/login');
         }
     }
 
@@ -102,7 +110,7 @@ class RegisterController extends Controller
         $this->validator($request->all())->validate();
 
         // trigger event
-        event(new Registered($user = $this->create($request->all())));
+        $user = $this->create($request->all());
         event(new LogEvent($request->ip(), $user, LogEvent::REGISTER));
         $user->notify(new ConfirmRegisterNotification());
 
