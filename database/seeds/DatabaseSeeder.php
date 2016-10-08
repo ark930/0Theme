@@ -14,6 +14,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        DB::beginTransaction();
+
         // generate admin user data
         $this->users = factory(App\Models\AdminUser::class, 1)->create();
 
@@ -80,5 +82,6 @@ class DatabaseSeeder extends Seeder
             }
         });
 
+        DB::commit();
     }
 }
