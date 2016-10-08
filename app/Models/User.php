@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -140,6 +141,17 @@ class User extends Authenticatable
     public function membershipTo($membership)
     {
         $this['membership'] = $membership;
+
+        if($membership == self::MEMBERSHIP_BASIC) {
+            $now = Carbon::now();
+            $this['basic_from'] = $now;
+            $this['basic_to'] = $now->addYear(1);
+        } else if($membership == self::MEMBERSHIP_PRO) {
+            $now = Carbon::now();
+            $this['pro_from'] = $now;
+            $this['pro_to'] = $now->addYear(1);
+        }
+
         $this->save();
     }
 
