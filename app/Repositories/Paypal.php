@@ -85,16 +85,8 @@ class Paypal
 
     public function executePayment($paymentId, $payerId, $totalAmount)
     {
-            // Get the payment Object by passing paymentId
-            // payment id was previously stored in session in
-            // CreatePaymentUsingPayPal.php
             $payment = Payment::get($paymentId, $this->apiContext);
 
-            // ### Payment Execute
-            // PaymentExecution object includes information necessary
-            // to execute a PayPal account payment.
-            // The payer_id is added to the request query parameters
-            // when the user is redirected from paypal back to your site
             $execution = new PaymentExecution();
             $execution->setPayerId($payerId);
 
@@ -103,25 +95,16 @@ class Paypal
             // based on the shipping address or any other reason, you could
             // do that by passing the transaction object with just `amount` field in it.
             // Here is the example on how we changed the shipping to $1 more than before.
-            $transaction = new Transaction();
-            $amount = new Amount();
-            $details = new Details();
-
-            $details->setShipping(2.2)
-                    ->setTax(1.3)
-                    ->setSubtotal(17.50);
-
-            $amount->setCurrency('USD');
-            $amount->setTotal($totalAmount);
-//            $amount->setDetails($details);
-            $transaction->setAmount($amount);
-
-            // Add the above transaction object inside our Execution object.
-            $execution->addTransaction($transaction);
+//            $transaction = new Transaction();
+//            $amount = new Amount();
+//            $amount->setCurrency('USD');
+//            $amount->setTotal(0.2);
+//            $transaction->setAmount($amount);
+//
+//            // Add the above transaction object inside our Execution object.
+//            $execution->addTransaction($transaction);
 
             try {
-                // Execute the payment
-                // (See bootstrap.php for more on `ApiContext`)
                 return $result = $payment->execute($execution, $this->apiContext);
                 try {
                     $payment = Payment::get($paymentId, $this->apiContext);
@@ -283,9 +266,6 @@ class Paypal
                    ->setPresentation($presentation)
             // Parameters for input field customization.
                    ->setInputFields($inputFields);
-
-        // For Sample Purposes Only.
-        $request = clone $webProfile;
 
         try {
             // Use this call to create a profile.

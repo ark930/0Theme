@@ -19,7 +19,7 @@ class CreateOrdersTable extends Migration
             $table->unsignedBigInteger('product_id')->nullable();
             $table->string('order_no', 15);
             $table->enum('payment_type', ['paypal']);
-            $table->string('payment_id', 60)->nullable()->comment('与订单关联的支付ID, 如PayPal的payment_id');
+            $table->string('payment_no', 60)->nullable()->comment('与订单关联的支付ID, 如PayPal的payment_id');
             $table->decimal('price')->comment('原价');
             $table->decimal('discount')->nullable()->comment('折扣');
             $table->decimal('pay_amount')->nullable();

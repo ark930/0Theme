@@ -27,6 +27,6 @@ class Order extends Model
 
     public function currentPaypalPayment()
     {
-        return $this->belongsTo('App\Models\PaypalPayment', 'payment_id');
+        return $this->belongsTo('App\Models\PaypalPayment', 'payment_no');
     }
 }

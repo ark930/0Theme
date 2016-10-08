@@ -82,6 +82,28 @@ class DatabaseSeeder extends Seeder
             }
         });
 
+        $product = new \App\Models\Product();
+        $product['price'] = 45;
+        $product['type'] = \App\Models\Product::TYPE_THEME;
+        $product['theme_id'] = 1;
+        $product['period_of_validity'] = \App\Models\Product::PERIOD_ONE_YEAR;
+        $product['for_sale'] = true;
+        $product->save();
+
+        $product = new \App\Models\Product();
+        $product['price'] = 128.98;
+        $product['type'] = \App\Models\Product::TYPE_PRO;
+        $product['period_of_validity'] = \App\Models\Product::PERIOD_ONE_YEAR;
+        $product['for_sale'] = true;
+        $product->save();
+
+        $product = new \App\Models\Product();
+        $product['price'] = 233.01;
+        $product['type'] = \App\Models\Product::TYPE_LIFETIME;
+        $product['period_of_validity'] = \App\Models\Product::PERIOD_LIFETIME;
+        $product['for_sale'] = true;
+        $product->save();
+
         DB::commit();
     }
 }

@@ -94,7 +94,7 @@ $factory->define(App\Models\Order::class, function (Faker\Generator $faker) {
     return [
         'order_no' => str_random(10),
         'payment_type' => 'paypal',
-        'payment_id' => rand(10000, 100000),
+        'payment_no' => rand(10000, 100000),
         'price' => rand(100, 10000) / 100,
         'pay_amount' => rand(100, 10000) / 100,
         'paid_amount' => rand(100, 10000) / 100,
