@@ -27,24 +27,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
-
-    /**
-     * The user has been authenticated.
-     * This function will be called when login success
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  mixed  $user
-     * @return mixed
-     */
-    protected function authenticated(Request $request, $user)
-    {
-        $user->saveLoginInfo($request->ip());
-        event(new LogEvent($request->ip(), $this->guard()->user(), LogEvent::LOGIN));
-
-        // return false to do the default action
-        return false;
-    }
+    protected $redirectTo = '/';
 
     public function __construct()
     {
@@ -65,5 +48,22 @@ class LoginController extends Controller
         $request->session()->regenerate();
 
         return redirect('/');
+    }
+
+    /**
+     * The user has been authenticated.
+     * This function will be called when login success
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $user
+     * @return mixed
+     */
+    protected function authenticated(Request $request, $user)
+    {
+        $user->saveLoginInfo($request->ip());
+        event(new LogEvent($request->ip(), $this->guard()->user(), LogEvent::LOGIN));
+
+        // return false to do the default action
+        return false;
     }
 }
