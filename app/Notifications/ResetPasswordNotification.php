@@ -44,10 +44,12 @@ class ResetPasswordNotification extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
+        $url = route('password_reset_token', [$this->email, $this->token]);
+
         return (new MailMessage)
             ->subject('test subject')
             ->line('You ARE receiving this email because we received a password reset request for your account.')
-            ->action('Reset Password', url('password/reset', [$this->email, $this->token]))
+            ->action('Reset Password', $url)
             ->line('If you did not request a password reset, no further action is required.');
     }
 

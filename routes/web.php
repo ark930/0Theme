@@ -23,20 +23,16 @@ Route::post('logout', 'Auth\LoginController@logout');
 // Registration Routes...
 Route::get('register', 'Auth\RegisterController@showRegistrationForm');
 Route::post('register', 'Auth\RegisterController@register');
+Route::get('register/confirm/{confirm_code}', 'Auth\RegisterController@registerConfirmWithCode')
+     ->where('confirm_code', '[0-9a-zA-Z]+')
+     ->name('register_confirm_with_code');
 
 // Password Reset Routes...
 Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm');
 Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail');
-Route::get('password/reset/{email}/{token}', 'Auth\ResetPasswordController@showResetForm');
+Route::get('password/email', function () { return view('sendemailsuccess'); })->name('password_email_sent');
+Route::get('password/reset/{email}/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password_reset_token');
 Route::post('password/reset', 'Auth\ResetPasswordController@reset');
-
-Route::get('password/email/sent', function () {
-    return view('sendemailsuccess');
-});
-
-Route::get('register/confirm/{confirm_code}', 'Auth\RegisterController@registerConfirmWithCode')
-     ->where('confirm_code', '[0-9a-zA-Z]+')
-     ->name('register_confirm_with_code');
 
 Route::group(['middleware' => ['auth']], function() {
     Route::get('register/confirm', 'Auth\RegisterController@registerConfirmPage')->name('register_confirm');
