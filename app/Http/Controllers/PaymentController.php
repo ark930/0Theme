@@ -94,6 +94,7 @@ class PaymentController extends Controller
                     $user->themes()->attach($product->theme);
                 }
 
+                return redirect('/home');
                 return $payment;
             }
 

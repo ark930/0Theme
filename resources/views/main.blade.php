@@ -38,9 +38,8 @@
         </small>
     </p>
 
-    <hr>
-
     @if($user['membership'] === App\Models\User::MEMBERSHIP_BASIC)
+        <hr>
         <h2>Theme</h2>
         <table>
             <thead>
@@ -60,9 +59,8 @@
         </table>
     @endif
 
-    <hr>
-
     @if($user->orders->count() > 0)
+        <hr>
         <h2>Order</h2>
         <table>
             <thead>
