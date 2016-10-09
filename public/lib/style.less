@@ -1,0 +1,436 @@
+@main-color:#2ecc71;
+body,html{
+  margin: 0;
+  padding: 0;
+  background: #f5f6f8;
+  font-family: arial;
+}
+a{
+	text-decoration: none;
+}
+input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill{
+  background: #eee !important;
+}
+.box-center{
+  display: box;
+  display: -webkit-box;
+  display: -moz-box;
+  -webkit-box-pack:center;
+  -moz-box-pack:center;
+  -webkit-box-align:center;
+  -moz-box-align:center;
+  height: 90%;
+  .box{
+    position: relative;
+    .inner {
+      overflow: hidden;
+      h3 {
+        font-size: 24px;
+        text-align: center;
+        letter-spacing: 2px;
+      }
+      form {
+        input {
+          display: block;
+          border: 0;
+          border-bottom: 1px solid #eee;
+          width: 100%;
+          margin-bottom: 10px;
+          line-height: 60px;
+          font-size: 18px;
+        }
+        input:active, input:focus {
+          outline: none;
+          border-color: #111;
+        }
+      }
+    }
+  }
+}
+header{
+	height: 60px;
+	position: fixed;
+	left: 0;
+	right: 0;
+  z-index: 999;
+  top:0;
+	line-height: 60px;
+	.logo{
+		float: left;
+		margin-left: 20px;
+		font-weight: bolder;
+		img{
+			height: 40px;
+			margin:10px 5px 10px 0;
+			float: left;
+		}
+		span{
+			font-weight: 100;
+			color: #aaa;
+		}
+	}
+	.menu{
+		margin-left: 20px;
+		float: left;
+		a{
+			padding-right: 10px;
+			color: #333;
+			opacity: .5;
+		}
+		a:hover,a.active{
+			opacity: 1;
+		}
+	}
+	.menu.tool{
+		float:right;
+		margin-right: 20px;
+      a{
+        opacity: 1;
+        color: #333;
+        border-radius: 40px;
+        padding: 12px 30px;
+        border:1px solid #333;
+      }
+      a:hover{
+        background: #333;
+        color: #fff;
+      }
+	}
+}
+.content{
+  width: 80%;
+  margin: 0 auto;
+  table{
+    background: #fff;
+    border-radius: 15px;
+    margin:0 auto;
+    width: 100%;
+    border:0 !important;
+    thead{
+      height: 60px;
+      line-height: 60px;
+       th{
+         border-bottom: 1px solid #eee;
+         color: #888;
+         font-weight: 100;
+         padding: 0 20px;
+         text-align: left;
+       }
+    }
+    tbody{
+      height: 50%;
+      overflow-y: scroll;
+      tr{
+        height: 80px;
+        line-height: 80px;
+        td{
+          padding: 0 20px;
+          a{
+            display: block;
+            line-height: 80px;
+            img{
+              width: 60px;
+              height: 60px;
+              border-radius: 50%;
+              float: left;
+              margin:10px;
+              margin-left: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+.page-login{
+  .box{
+    width: 520px;
+    max-width: 96%;
+    h3{
+      text-align: center;
+    }
+    h5{
+      text-align: left;
+    }
+    .inner{
+      background: #fff;
+      padding: 40px 80px;
+      a.forgot{
+        display: block;
+        text-align: center;
+        font-size: 13px;
+        color: #aaa;
+        margin-top: 50px;
+      }
+      .form-login{
+        label{
+          display: block;
+          margin: 20px 0;
+        }
+        input.checkbox{
+          margin: 0;
+          float: left;
+          width: 18px;
+        }
+        span{
+          font-size: 12px;
+          color: #888;
+        }
+        .button{
+          padding: 0;
+          cursor: pointer;
+          width: 48%;
+          display: inline-block;
+          margin: 10px 0;
+          border:1px solid #333;
+          line-height: 42px;
+          font-size: 13px;
+          background: #fff;
+          border-radius:60px;
+          outline: none;
+          text-align: center;
+        }
+        .button:hover{
+          background: #333;
+          color: #fff;
+        }
+        .button:last-child{
+          float: right;
+          background: #333;
+          color: #fff;
+        }
+        .button:last-child:hover{
+          background: @main-color;
+          border-color: @main-color;
+        }
+      }
+    }
+  }
+  .box.signup{
+    .button:last-child{
+      float: none !important;
+      margin: 20px 26% 0;
+    }
+  }
+  .box.check{
+    .inner{
+      padding: 10px 20px;
+      color: #888;
+      line-height: 1.5;
+      span{
+        color: #000;
+      }
+    }
+  }
+}
+
+
+.page-user{
+  .left{
+    width: 22%;
+    background: #fff;
+    border-radius: 15px;
+    float: left;
+    overflow: hidden;
+    margin-bottom: 40px;
+    .top{
+      border-bottom: 1px solid #eee;
+      padding:20px;
+      font-size: 18px;
+      line-height: 1;
+      span{
+        float: right;
+        padding: 5px 8px;
+        font-size: 14px;
+        background: #000000;
+        color: #fff;
+        border-radius: 4px;
+        margin-top: -2.5px;
+      }
+      span.basic{
+        background: #000;
+      }
+      span.pro{
+        background: #D7C489;
+      }
+      span.lifetime{
+        background: #15EAEA;
+      }
+    }
+    .inner{
+      padding: 20px;
+      .form-group{
+        margin-bottom: 20px;
+      }
+      label{
+        font-size: 14px;
+        color: #aaa;
+      }
+      h3{
+        margin: 0;
+        font-weight: normal;
+        font-size: 16px;
+      }
+      hr{
+        border: 0;
+        border-bottom: 1px solid #eee;
+        margin-bottom: 30px;
+      }
+    }
+  }
+  .right{
+    width: 76%;
+    background: #fff;
+    border-radius: 15px;
+    float: right;
+    .tab-content{
+      margin:0;
+      padding:0 20px;
+      display:none;
+    }
+    .user-themes{
+      .theTheme{
+        padding: 20px;
+        border-bottom: 1px solid #eee;
+        .name{
+          font-size: 18px;
+          margin-bottom: 10px;
+          span.sites{
+            background: #eee;
+            padding: 4px 8px;
+            line-height: 1;
+            border-radius: 4px;
+            color: #aaa;
+            font-size: 12px;
+          }
+          span.key{
+            float: right;
+            color: #aaa;
+            font-size: 12px;
+            i{
+              padding: 4px 8px;
+              background: #eee;
+              margin-left: 4px;
+              border-radius: 4px;
+            }
+          }
+        }
+        .sites{
+          margin: 0;
+          padding: 0;
+          overflow: hidden;
+          li{
+            width: 33.333%;
+            float: left;
+            list-style: none;
+            line-height: 20px;
+          }
+        }
+      }
+    }
+    .user-forum{
+      li{
+        border-bottom: 1px solid #eee;
+        padding: 20px 0;
+        a{
+          color: #333;
+          time{
+            font-size: 13px;
+            color: #aaa;
+          }
+          .status{
+            background: #333;
+            color: #fff;
+            float: right;
+            padding: 4px 8px;
+            font-size: 14px;
+            border-radius: 4px;
+          }
+          .status.closed{
+            background: #ddd;
+            color: #aaa;
+          }
+        }
+      }
+    }
+    .user-payment{
+      padding: 0;
+      thead{
+        line-height: 30px;
+        height: 30px;
+        font-size: 14px;
+      }
+      tbody{
+        font-size: 14px;
+        text-align: left;
+        tr{
+          height: auto;
+          line-height: 1;
+        }
+        td{
+          span{
+            font-size: 12px;
+            color: #888;
+            display: block;
+          }
+        }
+      }
+    }
+    .user-log{
+      padding: 0;
+      thead{
+        line-height: 30px;
+        height: 30px;
+        font-size: 14px;
+      }
+      tbody{
+        font-size: 14px;
+        text-align: left;
+        tr{
+          height: auto;
+          line-height: 30px;
+        }
+        tr:hover{
+          background: #eee;
+        }
+        td{
+          border-bottom: 1px solid #eee;
+          color: #aaa;
+
+          b{
+            font-size: 12px;
+            color: #fff;
+            padding: 2px 4px;
+            background: #333;
+            font-weight: normal;
+            border-radius: 2px;
+          }
+        }
+      }
+    }
+    .tab{
+      margin:0;
+      padding: 0;
+      width: 100%;
+      list-style:none;
+      overflow:hidden;
+      border-bottom: 1px solid #eee;
+      font-size: 18px;
+      line-height: 1;
+    }
+    .tab li{
+      float:left;
+      cursor:pointer;
+      text-align: center;
+      padding: 20px 30px;
+      color: #888;
+    }
+    .tab li:hover{
+      color: #333;
+    }
+    .on{display:block;}
+    .tab li.cur{
+      color: #333;
+    }
+  }
+}
