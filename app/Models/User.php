@@ -159,11 +159,11 @@ class User extends Authenticatable
 
         if($membership == self::MEMBERSHIP_BASIC) {
             $now = Carbon::now();
-            $this['basic_from'] = $now;
+            $this['basic_from'] = clone $now;
             $this['basic_to'] = $now->addYear(1);
         } else if($membership == self::MEMBERSHIP_PRO) {
             $now = Carbon::now();
-            $this['pro_from'] = $now;
+            $this['pro_from'] = clone $now;
             $this['pro_to'] = $now->addYear(1);
         }
 

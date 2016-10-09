@@ -69,7 +69,7 @@
                 <th>Order No.</th>
                 <th>Payment Type</th>
                 <th>Payment Id</th>
-                <th>price</th>
+                <th>Price</th>
                 <th>Paid Amount</th>
                 <th>Status</th>
                 <th>Created At</th>
