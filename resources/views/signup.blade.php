@@ -1,13 +1,13 @@
 <html>
 <head>
     <title>Zero Theme</title>
-    <link rel="stylesheet/less" type="text/css" href="lib/style.less" />
+    <link rel="stylesheet/less" type="text/css" href="/lib/style.less" />
 </head>
 <body>
 <header>
     <header>
         <div class="logo">
-            <img src="img/logo.png"/>THEME.<span>com</span>
+            <img src="/img/logo.png"/>THEME.<span>com</span>
         </div>
         <div class="menu">
             <a >Home</a>
@@ -57,6 +57,6 @@
         </div>
     </div>
 </div>
-<script src="lib/less.min.js" type="text/javascript"></script>
+<script src="/lib/less.min.js" type="text/javascript"></script>
 </body>
 </html>
