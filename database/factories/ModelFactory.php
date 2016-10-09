@@ -28,8 +28,6 @@ $factory->define(App\Models\User::class, function (Faker\Generator $faker) {
         'password' => bcrypt('secret'),
         'membership' => $memberships[array_rand($memberships)],
         'secret_key' => str_random(30),
-        'basic_from' => date('Y-m-d H:i-s'),
-        'basic_to' => date('Y-m-d H:i-s'),
         'pro_from' => date('Y-m-d H:i-s'),
         'pro_to' => date('Y-m-d H:i-s'),
         'register_at' => date('Y-m-d H:i-s'),

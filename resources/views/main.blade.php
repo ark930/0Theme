@@ -28,10 +28,7 @@
     <p>
         <strong>Membership</strong>: {{ strtoupper($user['membership']) }}
         <small>
-            @if($user['membership'] === App\Models\User::MEMBERSHIP_BASIC)
-                <strong>From</strong>: {{ $user['basic_from'] }}
-                <strong>To</strong>: {{ $user['basic_to'] }}
-            @elseif($user['membership'] === App\Models\User::MEMBERSHIP_PRO)
+            @if($user['membership'] === App\Models\User::MEMBERSHIP_PRO)
                 <strong>From</strong>: {{ $user['pro_from'] }}
                 <strong>To</strong>: {{ $user['pro_to'] }}
             @endif
@@ -46,6 +43,8 @@
                 <tr>
                     <th>Name</th>
                     <th>Version</th>
+                    <th>From</th>
+                    <th>To</th>
                 </tr>
             </thead>
             <tbody>
@@ -53,6 +52,9 @@
                     <tr>
                         <th>{{ $theme['name'] }}</th>
                         <th>{{ $theme->currentVersion['version'] }}</th>
+                        <th>{{ $theme->pivot['basic_from'] }}</th>
+                        <th>{{ $theme->pivot['basic_to'] }}</th>
+
                     </tr>
                 @endforeach
             </tbody>

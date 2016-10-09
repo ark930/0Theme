@@ -22,8 +22,6 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->enum('membership', ['free', 'basic', 'pro', 'lifetime'])->default('free')->comment('用户等级');
             $table->char('secret_key', 30)->unique()->nullable()->comment('用户更新主题时需要用到的密钥');
-            $table->timestamp('basic_from')->nullable();
-            $table->timestamp('basic_to')->nullable();
             $table->timestamp('pro_from')->nullable();
             $table->timestamp('pro_to')->nullable();
             $table->timestamp('register_at')->nullable()->comment('用户是否完成注册(点击邮箱中的确认邮件)');

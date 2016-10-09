@@ -18,3 +18,11 @@
     <input type="hidden" value="paypal" name="payment_type" placeholder="Payment type">
     <button type="submit">Lifetime</button>
 </form>
+
+@if($errors->count() > 0)
+    <script>
+        window.onload = function() {
+            alert("{!! $errors->first() !!}");
+        };
+    </script>
+@endif

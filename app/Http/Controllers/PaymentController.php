@@ -7,6 +7,7 @@ use App\Models\PaypalPayment;
 use App\Models\Product;
 use App\Models\User;
 use App\Repositories\Paypal;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,8 +19,16 @@ class PaymentController extends Controller
         $paymentType = $request->input('payment_type');
 
         $product = Product::findOrFail($productId);
-
         $user = Auth::user();
+
+        if($user['membership'] == User::MEMBERSHIP_LIFETIME) {
+            return back()->withErrors('You are already a LIFETIME user');
+        } else if($user['membership'] == User::MEMBERSHIP_PRO) {
+            if($product['type'] != Product::TYPE_LIFETIME) {
+                return back()->withErrors('You are already a PRO user');
+            }
+        }
+
         $userId = $user['id'];
         $orderNo = str_random(15);
         $productName = $product['name'];
@@ -90,12 +99,16 @@ class PaymentController extends Controller
                 } else if($product['type'] == Product::TYPE_PRO) {
                     $user->membershipTo(User::MEMBERSHIP_PRO);
                 } else if($product['type'] == Product::TYPE_THEME) {
+                    $now = Carbon::now();
                     $user->membershipTo(User::MEMBERSHIP_BASIC);
-                    $user->themes()->attach($product->theme);
+                    $user->themes()->attach($product->theme, [
+                        'basic_from' => clone $now,
+                        'basic_to' => $now->addYear(1),
+                    ]);
                 }
 
                 return redirect('/home');
-                return $payment;
+//                return $payment;
             }
 
             return 'no such payment';

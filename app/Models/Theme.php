@@ -19,15 +19,15 @@ class Theme extends Model
     public function users()
     {
         return $this->belongsToMany('App\Models\User', 'user_themes', 'user_id', 'theme_id')
-                    ->withPivot('is_deactivate', 'deactivate_reason')
-                    ->withTimestamps();
+            ->withPivot('is_deactivate', 'deactivate_reason', 'basic_from', 'basic_to')
+            ->withTimestamps();
     }
 
     public function userActiveWebsites()
     {
         return $this->belongsToMany('App\Models\User', 'user_theme_sites', 'user_id', 'theme_id')
-                    ->withPivot('website_domain')
-                    ->withTimestamps();
+            ->withPivot('website_domain')
+            ->withTimestamps();
     }
 
     public function product()

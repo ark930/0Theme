@@ -47,7 +47,7 @@ class User extends Authenticatable
     public function themes()
     {
         return $this->belongsToMany('App\Models\Theme', 'user_themes', 'user_id', 'theme_id')
-            ->withPivot('is_deactivate', 'deactivate_reason')
+            ->withPivot('is_deactivate', 'deactivate_reason', 'basic_from', 'basic_to')
             ->withTimestamps();
     }
 
@@ -157,11 +157,7 @@ class User extends Authenticatable
     {
         $this['membership'] = $membership;
 
-        if($membership == self::MEMBERSHIP_BASIC) {
-            $now = Carbon::now();
-            $this['basic_from'] = clone $now;
-            $this['basic_to'] = $now->addYear(1);
-        } else if($membership == self::MEMBERSHIP_PRO) {
+        if($membership == self::MEMBERSHIP_PRO) {
             $now = Carbon::now();
             $this['pro_from'] = clone $now;
             $this['pro_to'] = $now->addYear(1);
