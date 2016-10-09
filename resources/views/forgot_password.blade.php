@@ -30,8 +30,8 @@
                 <input type="email" placeholder="Email Address" name="email">
                 @if ($errors->has('email'))
                     <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
+                        <strong>{{ $errors->first('email') }}</strong>
+                    </span>
                 @endif
 
                 <button type="submit" class="button">SEND</button>

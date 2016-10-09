@@ -31,10 +31,8 @@ class ResetPasswordController extends Controller
         $this->middleware('guest');
     }
 
-//    public function showResetForm(Request $request, $token = null)
-//    {
-//        return view('reset')->with(
-//            ['token' => $token, 'email' => $request->email]
-//        );
-//    }
+    public function showResetForm(Request $request, $email, $token = null)
+    {
+        return view('reset')->with(['token' => $token, 'email' => $email]);
+    }
 }

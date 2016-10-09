@@ -27,7 +27,7 @@
         <div class="inner">
             <form class="form-login" role="form" method="POST" action="{{ url('/login') }}">
                 {{ csrf_field() }}
-                <input type="email" placeholder="Email Address" name="email" required autofocus>
+                <input type="email" placeholder="Email Address" name="email" value="{{ old('email') }}" required autofocus>
                 @if ($errors->has('email'))
                     <span class="help-block">
                         <strong>{{ $errors->first('email') }}</strong>
