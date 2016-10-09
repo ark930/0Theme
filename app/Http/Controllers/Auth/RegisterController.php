@@ -41,7 +41,7 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest', ['except' => ['registerConfirmPage', 'registerConfirmWithCode']]);
+//        $this->middleware('guest', ['except' => ['registerConfirmPage', 'registerConfirmWithCode']]);
     }
 
     public function showRegistrationForm()
