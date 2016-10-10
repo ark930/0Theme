@@ -34,19 +34,19 @@ Route::get('password/email', function () { return view('sendemailsuccess'); })->
 Route::get('password/reset/{email}/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password_reset_token');
 Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 
+Route::get('/home', 'HomeController@index');
+
 Route::group(['middleware' => ['auth']], function() {
     Route::get('register/confirm', 'Auth\RegisterController@registerConfirmPage')->name('register_confirm');
 
     Route::group(['middleware' => ['register_check', 'user_check']], function() {
-        Route::get('/home', 'HomeController@index');
 
     });
 });
 
 Route::group(['middleware' => []], function() {
     Route::get('/plan', 'MainController@showPlan');
-    Route::post('/plan', 'MainController@setPlan');
-    Route::get('/plan/info', 'MainController@showPlanInfo');
+    Route::get('/plan/{membership}', 'MainController@showPlanDetails');
 
     Route::get('/payment/experience/create', 'PaymentController@createExperience');
     Route::post('/payment/create', 'PaymentController@create');
@@ -59,3 +59,4 @@ Route::group(['middleware' => []], function() {
     Route::post('/theme/update', 'ThemeController@update');
 
 });
+

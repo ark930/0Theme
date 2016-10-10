@@ -84,7 +84,7 @@ class DatabaseSeeder extends Seeder
 
         $product = new \App\Models\Product();
         $product['name'] = '0Theme best for you';
-        $product['price'] = 45;
+        $product['price'] = 49;
         $product['type'] = \App\Models\Product::TYPE_THEME;
         $product['theme_id'] = 1;
         $product['period_of_validity'] = \App\Models\Product::PERIOD_ONE_YEAR;
@@ -93,7 +93,7 @@ class DatabaseSeeder extends Seeder
 
         $product = new \App\Models\Product();
         $product['name'] = '0Theme Pro Membership';
-        $product['price'] = 128.98;
+        $product['price'] = 149;
         $product['type'] = \App\Models\Product::TYPE_PRO;
         $product['period_of_validity'] = \App\Models\Product::PERIOD_ONE_YEAR;
         $product['for_sale'] = true;
@@ -101,7 +101,7 @@ class DatabaseSeeder extends Seeder
 
         $product = new \App\Models\Product();
         $product['name'] = '0Theme Lifetime Membership';
-        $product['price'] = 233.01;
+        $product['price'] = 249;
         $product['type'] = \App\Models\Product::TYPE_LIFETIME;
         $product['period_of_validity'] = \App\Models\Product::PERIOD_LIFETIME;
         $product['for_sale'] = true;

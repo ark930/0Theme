@@ -46,6 +46,7 @@ class Paypal
             ->setCurrency('USD')
             ->setQuantity(1)
             ->setSku($orderNo)
+            ->setDescription('this is some description')
             ->setPrice($price)
             ->setCategory('DIGITAL');
 
@@ -59,9 +60,9 @@ class Paypal
         $transaction = new Transaction();
         $transaction->setAmount($amount)
             ->setItemList($itemList)
-            ->setDescription("Payment description")
+            ->setDescription("Payment description xxoo")
             ->setInvoiceNumber(uniqid())
-//            ->setPurchaseUnitReferenceId($orderNo. '-reference-id')
+//            ->setPurchaseUnitReferenceId($orderNo)
         ;
 
         $redirectUrls = new RedirectUrls();
