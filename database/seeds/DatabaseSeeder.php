@@ -16,6 +16,31 @@ class DatabaseSeeder extends Seeder
     {
         DB::beginTransaction();
 
+        $product = new \App\Models\Product();
+        $product['name'] = 'Basic';
+        $product['price'] = 49;
+        $product['type'] = \App\Models\Product::TYPE_THEME;
+        $product['theme_id'] = 1;
+        $product['period_of_validity'] = \App\Models\Product::PERIOD_ONE_YEAR;
+        $product['for_sale'] = true;
+        $product->save();
+
+        $product = new \App\Models\Product();
+        $product['name'] = 'Pro';
+        $product['price'] = 149;
+        $product['type'] = \App\Models\Product::TYPE_PRO;
+        $product['period_of_validity'] = \App\Models\Product::PERIOD_ONE_YEAR;
+        $product['for_sale'] = true;
+        $product->save();
+
+        $product = new \App\Models\Product();
+        $product['name'] = 'Lifetime';
+        $product['price'] = 249;
+        $product['type'] = \App\Models\Product::TYPE_LIFETIME;
+        $product['period_of_validity'] = \App\Models\Product::PERIOD_LIFETIME;
+        $product['for_sale'] = true;
+        $product->save();
+
         // generate admin user data
         $this->users = factory(App\Models\AdminUser::class, 1)->create();
 
@@ -80,32 +105,16 @@ class DatabaseSeeder extends Seeder
                     ]);
                 }
             }
+
+            $product = new \App\Models\Product();
+            $product['name'] = $theme['name'];
+            $product['price'] = 49;
+            $product['type'] = \App\Models\Product::TYPE_THEME;
+            $product['period_of_validity'] = \App\Models\Product::PERIOD_ONE_YEAR;
+            $product['for_sale'] = true;
+            $product->theme()->associate($theme);
+            $product->save();
         });
-
-        $product = new \App\Models\Product();
-        $product['name'] = '0Theme best for you';
-        $product['price'] = 49;
-        $product['type'] = \App\Models\Product::TYPE_THEME;
-        $product['theme_id'] = 1;
-        $product['period_of_validity'] = \App\Models\Product::PERIOD_ONE_YEAR;
-        $product['for_sale'] = true;
-        $product->save();
-
-        $product = new \App\Models\Product();
-        $product['name'] = '0Theme Pro Membership';
-        $product['price'] = 149;
-        $product['type'] = \App\Models\Product::TYPE_PRO;
-        $product['period_of_validity'] = \App\Models\Product::PERIOD_ONE_YEAR;
-        $product['for_sale'] = true;
-        $product->save();
-
-        $product = new \App\Models\Product();
-        $product['name'] = '0Theme Lifetime Membership';
-        $product['price'] = 249;
-        $product['type'] = \App\Models\Product::TYPE_LIFETIME;
-        $product['period_of_validity'] = \App\Models\Product::PERIOD_LIFETIME;
-        $product['for_sale'] = true;
-        $product->save();
 
         DB::commit();
     }

@@ -81,41 +81,41 @@
         </ul>
         <div class="user-themes tab-content on">
             @if($user['membership'] ==  \App\Models\User::MEMBERSHIP_BASIC)
-            <table>
-                <tbody>
-                @foreach($themes as $theme)
-                <tr>
-                    <td><label>Theme</label>{{ $theme['name'] }}</td>
-                    <td><label>Version</label>{{ $theme->currentVersion['version'] }}</td>
-                    <td><label>Version</label>{{ $theme->currentVersion['release_at'] }}</td>
-                    <td><label>Expired Date</label>{{ $theme->pivot['basic_to'] }}</td>
-                    <td>
-                        <a class="button">Download</a>
-                        <a class="button">Document</a>
-                        <a class="button">Forum</a>
-                        <a class="button">Renew</a>
-                    </td>
-                </tr>
-                @endforeach
-                </tbody>
-            </table>
+                <table>
+                    <tbody>
+                    @foreach($themes as $theme)
+                        <tr>
+                            <td><label>Theme</label>{{ $theme['name'] }}</td>
+                            <td><label>Version</label>{{ $theme->currentVersion['version'] }}</td>
+                            <td><label>Version</label>{{ $theme->currentVersion['release_at'] }}</td>
+                            <td><label>Expired Date</label>{{ $theme->pivot['basic_to'] }}</td>
+                            <td>
+                                <a class="button">Download</a>
+                                <a class="button">Document</a>
+                                <a class="button">Forum</a>
+                                <a class="button">Renew</a>
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
             @elseif($user->isAdvanceUser())
-            <table>
-                <tbody>
-                @foreach($themes as $theme)
-                <tr>
-                    <td><label>Theme</label>{{ $theme['name'] }}</td>
-                    <td><label>Version</label>{{ $theme->currentVersion['version'] }}</td>
-                    <td><label>Version</label>{{ $theme->currentVersion['release_at'] }}</td>
-                    <td>
-                        <a class="button">Download</a>
-                        <a class="button">Document</a>
-                        <a class="button">Forum</a>
-                    </td>
-                </tr>
-                @endforeach
-                </tbody>
-            </table>
+                <table>
+                    <tbody>
+                    @foreach($themes as $theme)
+                        <tr>
+                            <td><label>Theme</label>{{ $theme['name'] }}</td>
+                            <td><label>Version</label>{{ $theme->currentVersion['version'] }}</td>
+                            <td><label>Version</label>{{ $theme->currentVersion['release_at'] }}</td>
+                            <td>
+                                <a class="button">Download</a>
+                                <a class="button">Document</a>
+                                <a class="button">Forum</a>
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
             @endif
         </div>
         <div class="user-forum tab-content">

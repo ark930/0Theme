@@ -38,7 +38,7 @@
                 </ul>
             </div>
             @if(null !== $upgrade)
-                <a href="" class="ad">
+                <a href="{{ $upgrade['link'] }}" class="ad">
                     <h3>{{ strtoupper($upgrade['membership']) }} <span>${{ $upgrade['price'] }}</span></h3>
                     <p>All Premium Theme & Plugins<br/>Zen Package</p>
                 </a>
@@ -46,7 +46,7 @@
         </div>
         <div class="right">
             <div class="top">
-                Total Price: <span>${{ $price }}</span>
+                Total Price: <span>{{ $price ? '$' . $price : ''}}</span>
             </div>
             <div class="mid">
                 <div class="form-group">
@@ -56,7 +56,7 @@
                 @if($membership == \App\Models\User::MEMBERSHIP_BASIC)
                 <div class="form-group">
                     <label>Theme</label>
-                    <h3>ThemeName <a href="#" class="button">Choose Another</a></h3>
+                    <h3>{{ $themeName }} <a href="{{ url('/themes') }}" class="button">Choose Another</a></h3>
                 </div>
                 @endif
                 <div class="form-group">

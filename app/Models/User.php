@@ -87,10 +87,12 @@ class User extends Authenticatable
     public function isAdvanceUser()
     {
         if($this['membership'] === self::MEMBERSHIP_PRO) {
+            return true;
+
             if($this['pro_to'] >= time()) {
                 return true;
             } else {
-                $this->membershipTo(self::MEMBERSHIP_FREE);
+//                $this->membershipTo(self::MEMBERSHIP_FREE);
             }
         } else if($this['membership'] === self::MEMBERSHIP_LIFETIME) {
             return true;
@@ -102,10 +104,11 @@ class User extends Authenticatable
     public function isBasicUser()
     {
         if($this['membership'] === self::MEMBERSHIP_BASIC) {
+            return true;
             if($this['basic_to'] >= time()) {
                 return true;
             } else {
-                $this->membershipTo(self::MEMBERSHIP_FREE);
+//                $this->membershipTo(self::MEMBERSHIP_FREE);
             }
         }
 
