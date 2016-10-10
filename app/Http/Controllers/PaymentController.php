@@ -106,8 +106,7 @@ class PaymentController extends Controller
                 $user->membershipTo(User::MEMBERSHIP_LIFETIME);
 
                 $data['membership'] = User::MEMBERSHIP_LIFETIME;
-                $data['period'] = '1 Year';
-                $data['themeName'] = $product->theme['name'];
+                $data['period'] = 'Forever';
             } else if($product['type'] == Product::TYPE_PRO) {
                 $user->membershipTo(User::MEMBERSHIP_PRO);
 
@@ -122,7 +121,8 @@ class PaymentController extends Controller
                 ]);
 
                 $data['membership'] = User::MEMBERSHIP_BASIC;
-                $data['period'] = 'Unlimited';
+                $data['period'] = '1 Year';
+                $data['themeName'] = $product->theme['name'];
             }
 
             return view('pay_success', $data);

@@ -68,7 +68,7 @@ class MainController extends Controller
             $data = array_merge($data, [
                 'price' => $lifetimeProduct['price'],
                 'theme_name' => null,
-                'period' => 'Unlimited',
+                'period' => 'Forever',
                 'upgrade' => null,
                 'productId' => 3,
             ]);
