@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Theme;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -80,6 +81,15 @@ class MainController extends Controller
 
     public function dashboard()
     {
-        return view('dashboard');
+        $user = Auth::user();
+        $orders = $user->orders;
+        $themes = [];
+        if($user->isAdvanceUser()) {
+            $themes =  Theme::all();
+        } else if($user->isBasicUser()) {
+            $themes = $user->themes;
+        }
+
+        return view('dashboard', compact('user', 'orders', 'themes'));
     }
 }
