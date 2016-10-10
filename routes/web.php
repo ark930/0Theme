@@ -35,6 +35,7 @@ Route::get('password/reset/{email}/{token}', 'Auth\ResetPasswordController@showR
 Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 
 Route::get('/home', 'HomeController@index');
+Route::get('/dashboard', 'MainController@dashboard');
 
 Route::group(['middleware' => ['auth']], function() {
     Route::get('register/confirm', 'Auth\RegisterController@registerConfirmPage')->name('register_confirm');
@@ -50,7 +51,8 @@ Route::group(['middleware' => []], function() {
 
     Route::get('/payment/experience/create', 'PaymentController@createExperience');
     Route::post('/payment/create', 'PaymentController@create');
-    Route::get('/payment/confirm', 'PaymentController@confirm');
+    Route::get('/payment/success', 'PaymentController@paySuccess');
+    Route::get('/payment/fail', 'PaymentController@payFail');
     Route::post('/payment/refund', 'PaymentController@refund');
     Route::get('/payment/sale', 'PaymentController@getSale');
 

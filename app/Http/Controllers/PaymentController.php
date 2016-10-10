@@ -34,9 +34,6 @@ class PaymentController extends Controller
         $productName = $product['name'];
         $amount = $product['price'];
 
-        $payment = $paypal->createPaymentUsingPayPal($request->root(), $productName, $orderNo, $amount);
-        $paymentArray = json_decode($payment, true);
-
         $order = new Order();
         $order['user_id'] = $userId;
         $order['product_id'] = $productId;
@@ -46,6 +43,12 @@ class PaymentController extends Controller
         $order['pay_amount'] = $amount;
         $order['status'] = Order::UNPAY;
         $order->save();
+
+        $successUrl = sprintf('%s/%s?oid=%s', $request->root(), 'payment/success', $order['id']);
+        $failUrl = sprintf('%s/%s?oid=%s', $request->root(), 'payment/fail', $order['id']);
+
+        $payment = $paypal->createPaymentUsingPayPal($productName, $orderNo, $amount, $successUrl, $failUrl);
+        $paymentArray = json_decode($payment, true);
 
         $paypalPayment = new PaypalPayment();
         $paypalPayment['payment_id'] = $paymentArray['id'];
@@ -65,56 +68,73 @@ class PaymentController extends Controller
         return redirect($payment->getApprovalLink());
     }
 
-    public function confirm(Request $request, Paypal $paypal)
+    public function paySuccess(Request $request, Paypal $paypal)
     {
-        $success = $request->input('success');
+        $orderId = $request->input('oid');
         $paymentId = $request->input('paymentId');
         $payerId = $request->input('PayerID');
 
-        if($success == 'true') {
-            $paypalPayment = PaypalPayment::where('payment_id', $paymentId)->first();
-            $total = $paypalPayment['amount'];
-            if(!empty($paypalPayment)) {
-                $payment = $paypal->executePayment($paymentId, $payerId, $total);
-                $paymentArray = json_decode($payment, true);
+        $paypalPayment = PaypalPayment::where('payment_id', $paymentId)->first();
+        $total = $paypalPayment['amount'];
+        if(!empty($paypalPayment)) {
+            $payment = $paypal->executePayment($paymentId, $payerId, $total);
+            $paymentArray = json_decode($payment, true);
 
-                $paypalPayment['payment_state'] = $paymentArray['state'];
-                $paypalPayment['execute_json'] = $payment;
-                $paypalPayment['payer_id'] = $payerId;
-                $paypalPayment['sale_id'] = $paymentArray['transactions'][0]['related_resources'][0]['sale']['id'];
-                $paypalPayment['sale_state'] = $paymentArray['transactions'][0]['related_resources'][0]['sale']['state'];
-                $paypalPayment['transaction_fee'] = $paymentArray['transactions'][0]['related_resources'][0]['sale']['transaction_fee']['value'];
-                $paypalPayment['payment_execute_at'] = date('Y-m-d H:i:s', strtotime($paymentArray['create_time']));
-                $paypalPayment->save();
+            $paypalPayment['payment_state'] = $paymentArray['state'];
+            $paypalPayment['execute_json'] = $payment;
+            $paypalPayment['payer_id'] = $payerId;
+            $paypalPayment['sale_id'] = $paymentArray['transactions'][0]['related_resources'][0]['sale']['id'];
+            $paypalPayment['sale_state'] = $paymentArray['transactions'][0]['related_resources'][0]['sale']['state'];
+            $paypalPayment['transaction_fee'] = $paymentArray['transactions'][0]['related_resources'][0]['sale']['transaction_fee']['value'];
+            $paypalPayment['payment_execute_at'] = date('Y-m-d H:i:s', strtotime($paymentArray['create_time']));
+            $paypalPayment->save();
 
-                $order = $paypalPayment->order;
-                $order['paid_amount'] = $paymentArray['transactions'][0]['related_resources'][0]['sale']['amount']['total'];
-                $order['status'] = Order::PAID;
-                $order->save();
+            $order = $paypalPayment->order;
+            $order['paid_amount'] = $paymentArray['transactions'][0]['related_resources'][0]['sale']['amount']['total'];
+            $order['status'] = Order::PAID;
+            $order->save();
 
-                $product = $order->product;
-                $user = $order->user;
-                if($product['type'] == Product::TYPE_LIFETIME) {
-                    $user->membershipTo(User::MEMBERSHIP_LIFETIME);
-                } else if($product['type'] == Product::TYPE_PRO) {
-                    $user->membershipTo(User::MEMBERSHIP_PRO);
-                } else if($product['type'] == Product::TYPE_THEME) {
-                    $now = Carbon::now();
-                    $user->membershipTo(User::MEMBERSHIP_BASIC);
-                    $user->themes()->attach($product->theme, [
-                        'basic_from' => clone $now,
-                        'basic_to' => $now->addYear(1),
-                    ]);
-                }
+            $product = $order->product;
+            $user = $order->user;
+            $data = [
+                'membership' => null,
+                'period' => null,
+                'account' => $user['email'],
+                'total' => $order['paid_amount'],
+            ];
+            if($product['type'] == Product::TYPE_LIFETIME) {
+                $user->membershipTo(User::MEMBERSHIP_LIFETIME);
 
-                return redirect('/home');
-//                return $payment;
+                $data['membership'] = User::MEMBERSHIP_LIFETIME;
+                $data['period'] = '1 Year';
+                $data['themeName'] = $product->theme['name'];
+            } else if($product['type'] == Product::TYPE_PRO) {
+                $user->membershipTo(User::MEMBERSHIP_PRO);
+
+                $data['membership'] = User::MEMBERSHIP_PRO;
+                $data['period'] = '1 Year';
+            } else if($product['type'] == Product::TYPE_THEME) {
+                $now = Carbon::now();
+                $user->membershipTo(User::MEMBERSHIP_BASIC);
+                $user->themes()->attach($product->theme, [
+                    'basic_from' => clone $now,
+                    'basic_to' => $now->addYear(1),
+                ]);
+
+                $data['membership'] = User::MEMBERSHIP_BASIC;
+                $data['period'] = 'Unlimited';
             }
 
-            return 'no such payment';
+            return view('pay_success', $data);
         }
+        return 'no such payment';
+    }
 
-        return 'payment fail';
+    public function payFail(Request $request)
+    {
+        $orderId = $request->input('oid');
+
+        return view('pay_fail', compact('orderId'));
     }
 
     public function refund(Request $request, Paypal $paypal)

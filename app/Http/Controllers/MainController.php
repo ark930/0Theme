@@ -77,4 +77,9 @@ class MainController extends Controller
 
         return view('plan_details', $data);
     }
+
+    public function dashboard()
+    {
+        return view('dashboard');
+    }
 }

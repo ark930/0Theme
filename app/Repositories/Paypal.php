@@ -36,7 +36,7 @@ class Paypal
         $this->apiContext = $this->getApiContext($clientId, $clientSecret);
     }
 
-    public function createPaymentUsingPayPal($baseUrl, $productName, $orderNo, $price)
+    public function createPaymentUsingPayPal($productName, $orderNo, $price, $successUrl, $failUrl)
     {
         $payer = new Payer();
         $payer->setPaymentMethod("paypal");
@@ -66,8 +66,8 @@ class Paypal
         ;
 
         $redirectUrls = new RedirectUrls();
-        $redirectUrls->setReturnUrl("$baseUrl/payment/confirm?success=true")
-            ->setCancelUrl("$baseUrl/payment/confirm?success=false");
+        $redirectUrls->setReturnUrl($successUrl)
+            ->setCancelUrl($failUrl);
 
         $payment = new Payment();
         $payment->setIntent("sale")
