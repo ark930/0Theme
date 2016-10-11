@@ -42,25 +42,23 @@ Route::group(['middleware' => ['auth']], function() {
 
     Route::group(['middleware' => ['register_check', 'user_check']], function() {
         Route::get('/dashboard', 'MainController@dashboard');
-
-        Route::get('/plan', 'MainController@showPlan');
-        Route::get('/plan/{membership}', 'MainController@showPlanDetails');
-
-        Route::get('/payment/experience/create', 'PaymentController@createExperience');
-        Route::post('/payment/create', 'PaymentController@create');
-        Route::get('/payment/success', 'PaymentController@paySuccess');
-        Route::get('/payment/fail', 'PaymentController@payFail');
-        Route::post('/payment/refund', 'PaymentController@refund');
-        Route::get('/payment/sale', 'PaymentController@getSale');
-
-        Route::post('/theme/download', 'ThemeController@download');
-        Route::post('/theme/update/check', 'ThemeController@checkUpdate');
-        Route::post('/theme/update', 'ThemeController@update');
     });
 });
 
 Route::group(['middleware' => []], function() {
+    Route::get('/plan', 'MainController@showPlan');
+    Route::get('/plan/{membership}', 'MainController@showPlanDetails');
 
+    Route::get('/payment/experience/create', 'PaymentController@createExperience');
+    Route::post('/payment/create', 'PaymentController@create');
+    Route::get('/payment/success', 'PaymentController@paySuccess');
+    Route::get('/payment/fail', 'PaymentController@payFail');
+    Route::post('/payment/refund', 'PaymentController@refund');
+    Route::get('/payment/sale', 'PaymentController@getSale');
+
+    Route::post('/theme/download', 'ThemeController@download');
+    Route::post('/theme/update/check', 'ThemeController@checkUpdate');
+    Route::post('/theme/update', 'ThemeController@update');
 
 });
 

@@ -19,12 +19,12 @@ class User extends Authenticatable
 
     public function getRegisterAtAttribute($value)
     {
-        return $this->formatDate($value);
+        return $this->formatDate($value, 'M d, Y H:i:s');
     }
 
     public function getLastLoginAtAttribute($value)
     {
-        return $this->formatDate($value);
+        return $this->formatDate($value, 'M d, Y H:i:s');
     }
 
     /**
