@@ -28,7 +28,7 @@
 <div class="content page-user">
     <div class="left">
         <div class="top">
-            Username<span class="member {{ $user['membership'] }}">{{ ucfirst($user['membership']) }}</span>
+            {{ $user['name'] }}<span class="member {{ $user['membership'] }}">{{ ucfirst($user['membership']) }}</span>
         </div>
         <div class="inner">
             <div class="form-group">
@@ -58,6 +58,7 @@
                 <h3>{{ $user['pro_to'] }}</h3>
             </div>
             @endif
+            @if($user['membership'] == \App\Models\User::MEMBERSHIP_BASIC)
             <div class="form-group link">
                 <!--renew 在basic上是没有的-->
                 <!--<a href="#" class="button">Renew</a>-->
@@ -71,6 +72,7 @@
                 <!--3.如果是Pro用户,可以永久差价,升级Lifetime,Lifetime终生不打折-->
                 <!--<a href="#" class="button">Upgrade to Lifetime ($79）</a>-->
             </div>
+            @endif
         </div>
     </div>
     <div class="right">
@@ -87,7 +89,7 @@
                         <tr>
                             <td><label>Theme</label>{{ $theme['name'] }}</td>
                             <td><label>Version</label>{{ $theme->currentVersion['version'] }}</td>
-                            <td><label>Version</label>{{ $theme->currentVersion['release_at'] }}</td>
+                            <td><label>Release Date</label>{{ $theme->currentVersion['release_at'] }}</td>
                             <td><label>Expired Date</label>{{ $theme->pivot['basic_to'] }}</td>
                             <td>
                                 <a class="button">Download</a>

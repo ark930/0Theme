@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Repositories\CommonDate;
 use Illuminate\Database\Eloquent\Model;
 
 class ThemeVersion extends Model
 {
+    use CommonDate;
+
     /**
      * A template path for theme resources
      *
@@ -18,6 +21,11 @@ class ThemeVersion extends Model
 
     const THUMBNAIL_DIRECTORY_NAME = 'thumbnail';
     const SHOWCASE_DIRECTORY_NAME = 'showcase';
+
+    public function getReleaseAtAttribute($value)
+    {
+        return $this->formatDate($value);
+    }
 
     public function theme()
     {

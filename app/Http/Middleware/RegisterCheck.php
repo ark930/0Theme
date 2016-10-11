@@ -11,7 +11,7 @@ class RegisterCheck
     {
         if (Auth::guard($guard)->check()) {
             $user = Auth::user();
-            if($user->isRegistered() == false) {
+            if($user->isRegisterConfirmed() == false) {
                 return redirect('/register/confirm');
             }
         }

@@ -3,18 +3,29 @@
 namespace App\Models;
 
 use App\Notifications\ResetPasswordNotification;
+use App\Repositories\CommonDate;
 use Carbon\Carbon;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, CommonDate;
 
     const MEMBERSHIP_FREE = 'free';
     const MEMBERSHIP_BASIC = 'basic';
     const MEMBERSHIP_PRO = 'pro';
     const MEMBERSHIP_LIFETIME = 'lifetime';
+
+    public function getRegisterAtAttribute($value)
+    {
+        return $this->formatDate($value);
+    }
+
+    public function getLastLoginAtAttribute($value)
+    {
+        return $this->formatDate($value);
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -58,7 +69,7 @@ class User extends Authenticatable
                     ->withTimestamps();
     }
 
-    public function isRegistered()
+    public function isRegisterConfirmed()
     {
         return !empty($this['register_at']) ? true : false;
     }

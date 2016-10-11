@@ -32,7 +32,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/dashboard';
 
     /**
      * Create a new controller instance.
@@ -78,7 +78,7 @@ class RegisterController extends Controller
     public function registerConfirmPage()
     {
         $user = Auth::user();
-        if(!empty($user) && $user->isRegistered()) {
+        if(!empty($user) && $user->isRegisterConfirmed()) {
             return redirect($this->redirectTo);
         }
 

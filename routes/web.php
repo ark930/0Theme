@@ -35,14 +35,13 @@ Route::get('password/reset/{email}/{token}', 'Auth\ResetPasswordController@showR
 Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 
 Route::get('/home', 'HomeController@index');
-Route::get('/dashboard', 'MainController@dashboard');
 Route::get('/themes', 'MainController@theme');
 
 Route::group(['middleware' => ['auth']], function() {
     Route::get('register/confirm', 'Auth\RegisterController@registerConfirmPage')->name('register_confirm');
 
     Route::group(['middleware' => ['register_check', 'user_check']], function() {
-
+        Route::get('/dashboard', 'MainController@dashboard');
     });
 });
 

@@ -27,7 +27,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/dashboard';
 
     public function __construct()
     {
@@ -67,6 +67,12 @@ class LoginController extends Controller
     {
         $user->saveLoginInfo($request->ip());
         event(new LogEvent($request->ip(), $this->guard()->user(), LogEvent::LOGIN));
+
+        if($user->isRegisterConfirmed() == false) {
+            return redirect('/register/confirm');
+        } else if($user->isFreeUser() == true) {
+            return redirect('/plan');
+        }
 
         // return false to do the default action
         return false;

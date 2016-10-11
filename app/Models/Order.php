@@ -2,13 +2,21 @@
 
 namespace App\Models;
 
+use App\Repositories\CommonDate;
 use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
+    use CommonDate;
+
     const UNPAY = 'unpay';
     const PAID = 'paid';
     const REFUNDED = 'refunded';
+
+    public function getCreatedAtAttribute($value)
+    {
+        return $this->formatDate($value);
+    }
 
     public function user()
     {

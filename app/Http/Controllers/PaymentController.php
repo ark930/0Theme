@@ -18,7 +18,11 @@ class PaymentController extends Controller
         $productId = $request->input('product_id');
         $paymentType = $request->input('payment_type');
 
-        $product = Product::findOrFail($productId);
+        $product = Product::find($productId);
+        if(empty($product)) {
+            return back()->withErrors('Select a theme, please');
+        }
+
         $user = Auth::user();
 
         if($user['membership'] == User::MEMBERSHIP_LIFETIME) {
