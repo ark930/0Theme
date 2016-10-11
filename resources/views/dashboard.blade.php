@@ -90,7 +90,7 @@
                             <td><label>Theme</label>{{ $theme['name'] }}</td>
                             <td><label>Version</label>{{ $theme->currentVersion['version'] }}</td>
                             <td><label>Release Date</label>{{ $theme->currentVersion['release_at'] }}</td>
-                            <td><label>Expired Date</label>{{ $theme->pivot['basic_to'] }}</td>
+                            <td><label>Expired Date</label>{{ date('M d, Y', strtotime($theme->pivot['basic_to'])) }}</td>
                             <td>
                                 <a class="button">Download</a>
                                 <a class="button">Document</a>
