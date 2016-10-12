@@ -46,7 +46,7 @@ class Handler extends ExceptionHandler
     public function render($request, Exception $exception)
     {
         if ($exception instanceof TokenMismatchException) {
-            return back()->withErrors(['error' => 'Sorry, your session seems to have expired. Please try again.']);
+            return back()->withInput()->withErrors(['error' => 'Sorry, your session seems to have expired. Please try again.']);
         }
 
         return parent::render($request, $exception);

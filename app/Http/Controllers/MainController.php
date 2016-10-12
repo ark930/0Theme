@@ -16,7 +16,7 @@ class MainController extends Controller
         $proProduct = Product::find(2);
         $lifetimeProduct = Product::find(3);
 
-        return view('plan', compact('basicProduct', 'proProduct', 'lifetimeProduct'));
+        return view('dashboard.plan', compact('basicProduct', 'proProduct', 'lifetimeProduct'));
     }
 
     public function showPlanDetails(Request $request, $membership)
@@ -91,7 +91,7 @@ class MainController extends Controller
             abort(404);
         }
 
-        return view('plan_details', $data);
+        return view('dashboard.plan_details', $data);
     }
 
     public function dashboard()
@@ -105,7 +105,7 @@ class MainController extends Controller
             $themes = $user->themes;
         }
 
-        return view('dashboard', compact('user', 'orders', 'themes'));
+        return view('dashboard.main' , compact('user', 'orders', 'themes'));
     }
 
     public function theme()

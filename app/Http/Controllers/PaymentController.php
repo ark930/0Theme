@@ -129,7 +129,7 @@ class PaymentController extends Controller
                 $data['themeName'] = $product->theme['name'];
             }
 
-            return view('pay_success', $data);
+            return view('dashboard.pay_success', $data);
         }
         return 'no such payment';
     }
@@ -138,7 +138,7 @@ class PaymentController extends Controller
     {
         $orderId = $request->input('oid');
 
-        return view('pay_fail', compact('orderId'));
+        return view('dashboard.pay_fail', compact('orderId'));
     }
 
     public function refund(Request $request, Paypal $paypal)
