@@ -17,15 +17,16 @@ class DatabaseSeeder extends Seeder
         DB::beginTransaction();
 
         $product = new \App\Models\Product();
+        $product['id'] = \App\Models\Product::THEME_PRODUCT_ID;
         $product['name'] = 'Basic';
         $product['price'] = 49;
         $product['type'] = \App\Models\Product::TYPE_THEME;
-        $product['theme_id'] = 1;
         $product['period_of_validity'] = \App\Models\Product::PERIOD_ONE_YEAR;
         $product['for_sale'] = true;
         $product->save();
 
         $product = new \App\Models\Product();
+        $product['id'] = \App\Models\Product::PRO_PRODUCT_ID;
         $product['name'] = 'Pro';
         $product['price'] = 149;
         $product['type'] = \App\Models\Product::TYPE_PRO;
@@ -34,6 +35,7 @@ class DatabaseSeeder extends Seeder
         $product->save();
 
         $product = new \App\Models\Product();
+        $product['id'] = \App\Models\Product::LIFETIME_PRODUCT_ID;
         $product['name'] = 'Lifetime';
         $product['price'] = 249;
         $product['type'] = \App\Models\Product::TYPE_LIFETIME;

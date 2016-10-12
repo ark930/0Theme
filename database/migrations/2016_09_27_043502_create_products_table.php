@@ -23,6 +23,8 @@ class CreateProductsTable extends Migration
             $table->boolean('for_sale')->default(true);
             $table->timestamps();
         });
+
+        DB::update('ALTER TABLE products AUTO_INCREMENT = 1001;');
     }
 
     /**

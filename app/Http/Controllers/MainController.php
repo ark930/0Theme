@@ -12,9 +12,9 @@ class MainController extends Controller
 {
     public function showPlan()
     {
-        $basicProduct = Product::find(1);
-        $proProduct = Product::find(2);
-        $lifetimeProduct = Product::find(3);
+        $basicProduct = Product::getThemeProduct();
+        $proProduct = Product::getProProduct();
+        $lifetimeProduct = Product::getLifetimeProduct();
 
         return view('dashboard.plan', compact('basicProduct', 'proProduct', 'lifetimeProduct'));
     }
@@ -41,7 +41,7 @@ class MainController extends Controller
         if(User::MEMBERSHIP_BASIC === strtolower($membership)) {
             $themeName = $request->input('theme');
             $basicProduct = Product::where('name', $themeName)->first();
-            $proProduct = Product::find(2);
+            $proProduct = Product::getProProduct();
             if(!empty($basicProduct)) {
                 $data = array_merge($data, [
                     'price' => $basicProduct['price'],
@@ -65,8 +65,8 @@ class MainController extends Controller
                 ]);
             }
         } else if(User::MEMBERSHIP_PRO === strtolower($membership)) {
-            $proProduct = Product::find(2);
-            $lifetimeProduct = Product::find(3);
+            $proProduct = Product::getProProduct();
+            $lifetimeProduct = Product::getLifetimeProduct();
             $data = array_merge($data, [
                 'price' => $proProduct['price'],
                 'themeName' => null,
@@ -76,16 +76,16 @@ class MainController extends Controller
                     'price' => $lifetimeProduct['price'],
                     'link' => url('/plan/lifetime'),
                 ],
-                'productId' => 2,
+                'productId' => $proProduct['id'],
             ]);
         } else if(User::MEMBERSHIP_LIFETIME === strtolower($membership)) {
-            $lifetimeProduct = Product::find(3);
+            $lifetimeProduct = Product::getLifetimeProduct();
             $data = array_merge($data, [
                 'price' => $lifetimeProduct['price'],
                 'themeName' => null,
                 'period' => 'Forever',
                 'upgrade' => null,
-                'productId' => 3,
+                'productId' => $lifetimeProduct['id'],
             ]);
         } else {
             abort(404);
@@ -110,7 +110,7 @@ class MainController extends Controller
 
     public function theme()
     {
-        $products = Product::where('id', '>', 3)->get();
+        $products = Product::where('id', '>', 1000)->get();
 
         return view('theme', compact('products'));
     }

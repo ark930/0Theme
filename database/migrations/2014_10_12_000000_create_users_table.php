@@ -31,6 +31,8 @@ class CreateUsersTable extends Migration
             $table->unsignedBigInteger('inviter_id')->nullable()->comment('邀请人 user_id');
             $table->timestamps();
         });
+
+        DB::update('ALTER TABLE users AUTO_INCREMENT = 1001;');
     }
 
     /**

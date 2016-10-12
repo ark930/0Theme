@@ -10,20 +10,23 @@
             <img src="{{ asset('/img/logo.png') }}"/>THEME.<span>com</span>
         </div>
         <div class="menu">
-            <a >Home</a>
-            <a >Themes</a>
-            <a >ZEN</a>
-            <a >Pricing</a>
-            <a >Forum</a>
+            <a>Home</a>
+            <a>Themes</a>
+            <a>ZEN</a>
+            <a>Pricing</a>
+            <a>Forum</a>
         </div>
-        <div class="menu tool">
-            <a href="{{ url('/logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
-                Logout
-            </a>
-            <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
-                {{ csrf_field() }}
-            </form>
-        </div>
+
+        @if(!Auth::guest())
+            <div class="menu tool">
+                <a href="{{ url('/logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                    Logout
+                </a>
+                <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+                    {{ csrf_field() }}
+                </form>
+            </div>
+        @endif
     </header>
 
     @yield('content')

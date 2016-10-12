@@ -19,6 +19,8 @@ class CreateThemesTable extends Migration
             $table->string('name');
             $table->timestamps();
         });
+
+        DB::update('ALTER TABLE themes AUTO_INCREMENT = 1001;');
     }
 
     /**

@@ -28,6 +28,8 @@ class CreateOrdersTable extends Migration
             $table->enum('status', ['unpay', 'paid', 'refunded'])->default('unpay');
             $table->timestamps();
         });
+
+        DB::update('ALTER TABLE orders AUTO_INCREMENT = 1001;');
     }
 
     /**

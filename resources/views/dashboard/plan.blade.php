@@ -28,7 +28,7 @@
                             <li class="disable">  One-Time Purchase Fee</li>
                         </ul>
                     </div>
-                    <form class="buy" method="GET" action="/plan/basic">
+                    <form class="buy" method="GET" action="{{ url('/plan/basic') }}">
                         <button >Choose A Theme</button>
                     </form>
                 </div>
@@ -58,7 +58,7 @@
                             <li>  One-Time Purchase Fee</li>
                         </ul>
                     </div>
-                    <form class="buy" method="GET" action="/plan/pro">
+                    <form class="buy" method="GET" action="{{ url('/plan/pro') }}">
                         <button>Buy Pro</button>
                     </form>
                 </div>
@@ -88,7 +88,7 @@
                             <li>  One-Time Purchase Fee</li>
                         </ul>
                     </div>
-                    <form class="buy" method="GET" action="/plan/lifetime">
+                    <form class="buy" method="GET" action="{{ url('/plan/lifetime') }}">
                         <button >Buy Lifetime</button>
                     </form>
                 </div>
