@@ -55,7 +55,9 @@ class MainController extends Controller
                     'productId' => $basicProduct['id'],
                 ]);
             } else {
+                $basicProduct = Product::getThemeProduct();
                 $data = array_merge($data, [
+                    'price' => $basicProduct['price'],
                     'period' => '1 Year',
                     'upgrade' => [
                         'membership' => User::MEMBERSHIP_PRO,

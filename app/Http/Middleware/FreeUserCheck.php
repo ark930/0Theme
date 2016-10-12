@@ -5,14 +5,14 @@ namespace App\Http\Middleware;
 use Closure;
 use Auth;
 
-class RegisterCheck
+class FreeUserCheck
 {
     public function handle($request, Closure $next, $guard = null)
     {
         if (Auth::guard($guard)->check()) {
             $user = Auth::user();
-            if($user->isRegisterConfirmed() == false) {
-                return redirect('/register/confirm');
+            if($user->isFreeUser() == true) {
+                return redirect('/plan');
             }
         }
 

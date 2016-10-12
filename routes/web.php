@@ -36,28 +36,30 @@ Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 
 Route::get('/themes', 'MainController@theme');
 
+// The following routes can be used when user login
 Route::group(['middleware' => ['auth']], function() {
     Route::get('register/confirm', 'Auth\RegisterController@registerConfirmPage')->name('register_confirm');
 
-    Route::group(['middleware' => ['register_check', 'user_check']], function() {
+    // The following routes can be used when user confirmed the register email
+    Route::group(['middleware' => ['register_confirm_check']], function() {
+        Route::get('/plan', 'MainController@showPlan');
+        Route::get('/plan/{membership}', 'MainController@showPlanDetails');
         Route::get('/dashboard', 'MainController@dashboard');
+
+        Route::post('/payment/create', 'PaymentController@create');
+        Route::get('/payment/success', 'PaymentController@paySuccess');
+        Route::get('/payment/fail', 'PaymentController@payFail');
+        Route::get('/payment/sale', 'PaymentController@getSale');
+
+        // The following routes can be used by who is a non-free user
+        Route::group(['middleware' => ['user_check']], function() {
+            Route::post('/theme/download', 'ThemeController@download');
+            Route::post('/theme/update/check', 'ThemeController@checkUpdate');
+            Route::post('/theme/update', 'ThemeController@update');
+        });
     });
 });
 
-Route::group(['middleware' => ['auth']], function() {
-    Route::get('/plan', 'MainController@showPlan');
-    Route::get('/plan/{membership}', 'MainController@showPlanDetails');
-
-    Route::get('/payment/experience/create', 'PaymentController@createExperience');
-    Route::post('/payment/create', 'PaymentController@create');
-    Route::get('/payment/success', 'PaymentController@paySuccess');
-    Route::get('/payment/fail', 'PaymentController@payFail');
-    Route::post('/payment/refund', 'PaymentController@refund');
-    Route::get('/payment/sale', 'PaymentController@getSale');
-
-    Route::post('/theme/download', 'ThemeController@download');
-    Route::post('/theme/update/check', 'ThemeController@checkUpdate');
-    Route::post('/theme/update', 'ThemeController@update');
-
-});
-
+// for testing
+Route::get('/payment/experience/create', 'PaymentController@createExperience');
+Route::post('/payment/refund', 'PaymentController@refund');

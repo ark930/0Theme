@@ -33,10 +33,10 @@
                         <label>Membership</label>
                         <h3>{{ ucfirst(strtolower($membership)) }}</h3>
                     </div>
-                    @if($membership == \App\Models\User::MEMBERSHIP_BASIC)
+                    @if(strtoupper($membership) == \App\Models\User::MEMBERSHIP_BASIC)
                         <div class="form-group">
                             <label>Theme</label>
-                            <h3>{{ $themeName }} <a href="{{ url('/themes') }}" class="button">Choose Another</a></h3>
+                            <h3>{{ $themeName }} <a href="{{ url('/themes') }}" class="button">Choose a theme</a></h3>
                         </div>
                     @endif
                     <div class="form-group">
