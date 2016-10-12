@@ -6,14 +6,14 @@ use App\Models\Order;
 use App\Models\PaypalPayment;
 use App\Models\Product;
 use App\Models\User;
-use App\Repositories\Paypal;
+use App\Repositories\PayPal;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class PaymentController extends Controller
 {
-    public function create(Request $request, Paypal $paypal)
+    public function create(Request $request, PayPal $paypal)
     {
         $productId = $request->input('product_id');
         $paymentType = $request->input('payment_type');
@@ -72,7 +72,7 @@ class PaymentController extends Controller
         return redirect($payment->getApprovalLink());
     }
 
-    public function paySuccess(Request $request, Paypal $paypal)
+    public function paySuccess(Request $request, PayPal $paypal)
     {
         $orderId = $request->input('oid');
         $paymentId = $request->input('paymentId');
@@ -141,7 +141,7 @@ class PaymentController extends Controller
         return view('dashboard.pay_fail', compact('orderId'));
     }
 
-    public function refund(Request $request, Paypal $paypal)
+    public function refund(Request $request, PayPal $paypal)
     {
         $saleId = $request->input('sale_id');
 //        $saleId = '1DX802939Y8710632';
@@ -150,7 +150,7 @@ class PaymentController extends Controller
         return $refundedSale;
     }
 
-    public function getSale(Request $request, Paypal $paypal)
+    public function getSale(Request $request, PayPal $paypal)
     {
         $saleId = $request->input('sale_id');
 //        $saleId = '8XX420913B841634H';
@@ -159,7 +159,7 @@ class PaymentController extends Controller
         return $refundedSale;
     }
 
-    public function createExperience(Request $request, Paypal $paypal)
+    public function createExperience(Request $request, PayPal $paypal)
     {
         $profile = $paypal->CreateWebProfile();
 

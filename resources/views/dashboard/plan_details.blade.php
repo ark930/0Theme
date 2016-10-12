@@ -53,7 +53,7 @@
                     {{ csrf_field() }}
                     <input type="hidden" value="{{ $productId }}" name="product_id" placeholder="Product ID">
                     <input type="hidden" value="{{ $paymentType }}" name="payment_type" placeholder="Payment type">
-                    <button type="submit">Pay on Paypal</button>
+                    <button type="submit">Pay on PayPal</button>
                 </form>
             </div>
         </div>

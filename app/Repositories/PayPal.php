@@ -24,7 +24,7 @@ use PayPal\Rest\ApiContext;
 
 use Exception;
 
-class Paypal
+class PayPal
 {
     private $apiContext;
 
