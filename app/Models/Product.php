@@ -31,7 +31,7 @@ class Product extends Model
         return $this->belongsTo('App\Models\Theme');
     }
 
-    public static function getThemeProduct()
+    public static function getBasicProduct()
     {
         return self::find(self::THEME_PRODUCT_ID);
     }

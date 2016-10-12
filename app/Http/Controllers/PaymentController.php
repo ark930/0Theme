@@ -20,7 +20,7 @@ class PaymentController extends Controller
 
         $product = Product::find($productId);
         if(empty($product)) {
-            return back()->withErrors('Select a theme, please');
+            return back()->withErrors('Please select a theme');
         }
 
         $user = Auth::user();
@@ -33,10 +33,16 @@ class PaymentController extends Controller
             }
         }
 
+        $price = $product['price'];
+        if($user->isBasicUser()) {
+            $basicProduct = Product::getBasicProduct();
+            $price -= $basicProduct['price'];
+        }
+
         $userId = $user['id'];
-        $orderNo = str_random(15);
+        $orderNo = Order::makeOrderNo();
         $productName = $product['name'];
-        $amount = $product['price'];
+        $amount = $price;
 
         $order = new Order();
         $order['user_id'] = $userId;
@@ -51,7 +57,11 @@ class PaymentController extends Controller
         $successUrl = sprintf('%s/%s?oid=%s', $request->root(), 'payment/success', $order['id']);
         $failUrl = sprintf('%s/%s?oid=%s', $request->root(), 'payment/fail', $order['id']);
 
-        $payment = $paypal->createPaymentUsingPayPal($productName, $orderNo, $amount, $successUrl, $failUrl);
+        try {
+            $payment = $paypal->createPaymentUsingPayPal($productName, $orderNo, $amount, $successUrl, $failUrl);
+        } catch (\Exception $exception) {
+            return back()->withErrors('Something wrong happened while paying, please try again.');
+        }
         $paymentArray = json_decode($payment, true);
 
         $paypalPayment = new PaypalPayment();
@@ -81,7 +91,11 @@ class PaymentController extends Controller
         $paypalPayment = PaypalPayment::where('payment_id', $paymentId)->first();
         $total = $paypalPayment['amount'];
         if(!empty($paypalPayment)) {
-            $payment = $paypal->executePayment($paymentId, $payerId, $total);
+            try {
+                $payment = $paypal->executePayment($paymentId, $payerId, $total);
+            } catch (\Exception $exception) {
+                return back()->withErrors('Something wrong happened while paying, please try again.');
+            }
             $paymentArray = json_decode($payment, true);
 
             $paypalPayment['payment_state'] = $paymentArray['state'];
@@ -131,6 +145,7 @@ class PaymentController extends Controller
 
             return view('dashboard.pay_success', $data);
         }
+
         return 'no such payment';
     }
 

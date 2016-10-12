@@ -76,11 +76,7 @@ class PayPal
             ->setNoteToPayer('一些对产品的介绍 你可以看到吗 哈哈哈哈哈哈哈哈哈哈')
             ->setTransactions(array($transaction));
 
-        try {
-            $payment->create($this->apiContext);
-        } catch (\Exception $ex) {
-            exit(1);
-        }
+        $payment->create($this->apiContext);
 
         return $payment;
     }
@@ -106,21 +102,8 @@ class PayPal
 //            // Add the above transaction object inside our Execution object.
 //            $execution->addTransaction($transaction);
 
-            try {
-                return $result = $payment->execute($execution, $this->apiContext);
-                try {
-                    $payment = Payment::get($paymentId, $this->apiContext);
-                } catch (Exception $ex) {
-                    dd($ex);
-                    exit(1);
-                }
-            } catch (Exception $ex) {
-                dd($ex);
-                exit(1);
-            }
-
-            return $payment;
-
+                return $payment->execute($execution, $this->apiContext);
+//                $payment = Payment::get($paymentId, $this->apiContext);
     }
 
     public function saleRefund($saleId)

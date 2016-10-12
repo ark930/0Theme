@@ -90,7 +90,7 @@ $factory->define(App\Models\Order::class, function (Faker\Generator $faker) {
     $status = ['unpay', 'paid', 'refunded'];
 
     return [
-        'order_no' => str_random(10),
+        'order_no' => \App\Models\Order::makeOrderNo(),
         'payment_type' => 'paypal',
         'payment_no' => rand(10000, 100000),
         'price' => rand(100, 10000) / 100,

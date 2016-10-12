@@ -11,7 +11,7 @@ class PlanController extends Controller
 {
     public function showPlan()
     {
-        $basicProduct = Product::getThemeProduct();
+        $basicProduct = Product::getBasicProduct();
         $proProduct = Product::getProProduct();
         $lifetimeProduct = Product::getLifetimeProduct();
 
@@ -39,8 +39,13 @@ class PlanController extends Controller
 
         if(User::MEMBERSHIP_BASIC === strtolower($membership)) {
             $themeName = $request->input('theme');
-            $basicProduct = Product::where('name', $themeName)->first();
+            if(!empty($themeName)) {
+                $basicProduct = Product::where('name', $themeName)
+                    ->where('type', Product::TYPE_THEME)
+                    ->first();
+            }
             $proProduct = Product::getProProduct();
+
             if(!empty($basicProduct)) {
                 $data = array_merge($data, [
                     'price' => $basicProduct['price'],
@@ -54,7 +59,7 @@ class PlanController extends Controller
                     'productId' => $basicProduct['id'],
                 ]);
             } else {
-                $basicProduct = Product::getThemeProduct();
+                $basicProduct = Product::getBasicProduct();
                 $data = array_merge($data, [
                     'price' => $basicProduct['price'],
                     'period' => '1 Year',
@@ -68,8 +73,15 @@ class PlanController extends Controller
         } else if(User::MEMBERSHIP_PRO === strtolower($membership)) {
             $proProduct = Product::getProProduct();
             $lifetimeProduct = Product::getLifetimeProduct();
+
+            $price = $proProduct['price'];
+            if($user->isBasicUser()) {
+                $basicProduct = Product::getBasicProduct();
+                $price -= $basicProduct['price'];
+            }
+
             $data = array_merge($data, [
-                'price' => $proProduct['price'],
+                'price' => $price,
                 'themeName' => null,
                 'period' => '1 Year',
                 'upgrade' => [

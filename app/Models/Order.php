@@ -37,4 +37,18 @@ class Order extends Model
     {
         return $this->belongsTo('App\Models\PaypalPayment', 'payment_no');
     }
+
+    public static function makeOrderNo()
+    {
+        $counter = 3;
+        do {
+            $orderNo = date('Ymd') . strtoupper(str_random(4));
+            $order = Order::where('order_no', $orderNo)->first();
+            if(empty($order)) {
+                return $orderNo;
+            }
+        } while(--$counter > 0);
+
+        return null;
+    }
 }

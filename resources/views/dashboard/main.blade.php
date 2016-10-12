@@ -38,7 +38,8 @@
                         <h3>{{ $user['pro_to'] }}</h3>
                     </div>
                 @endif
-                @if($user['membership'] == \App\Models\User::MEMBERSHIP_BASIC)
+                @if($user['membership'] == \App\Models\User::MEMBERSHIP_BASIC
+                    || $user['membership'] == \App\Models\User::MEMBERSHIP_BASIC)
                     <div class="form-group link">
                         <!--renew 在basic上是没有的-->
                         <!--<a href="#" class="button">Renew</a>-->
@@ -51,6 +52,12 @@
                         <!--<a href="#" class="button">Buy Pro（$149）</a>-->
                         <!--3.如果是Pro用户,可以永久差价,升级Lifetime,Lifetime终生不打折-->
                         <!--<a href="#" class="button">Upgrade to Lifetime ($79）</a>-->
+                    </div>
+                @endif
+
+                @if($user['membership'] != \App\Models\User::MEMBERSHIP_LIFETIME)
+                    <div class="form-group link">
+                        <a href="#" class="button line">Upgrade to Lifetime ($249）</a>
                     </div>
                 @endif
             </div>
