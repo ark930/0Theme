@@ -101,8 +101,13 @@ class RegisterController extends Controller
             $this->guard()->logout();
             $request->session()->flush();
             $request->session()->regenerate();
-            return redirect('/login');
+            return redirect('/register/done');
         }
+    }
+
+    public function registerDone()
+    {
+        return view('dashboard.register_done');
     }
 
     public function register(Request $request)

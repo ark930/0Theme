@@ -26,6 +26,7 @@ Route::post('register', 'Auth\RegisterController@register');
 Route::get('register/confirm/{confirm_code}', 'Auth\RegisterController@registerConfirmWithCode')
 //     ->where('confirm_code', '[0-9a-zA-Z]+')
      ->name('register_confirm_with_code');
+Route::get('register/done', 'Auth\RegisterController@registerDone');
 
 // Password Reset Routes...
 Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm');
