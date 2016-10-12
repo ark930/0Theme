@@ -5,21 +5,16 @@
 </head>
 <body>
 <header>
-    <header>
-        <div class="logo">
-            <img src="/img/logo.png"/>THEME.<span>com</span>
-        </div>
-        <div class="menu">
-            <a >Home</a>
-            <a >Themes</a>
-            <a >ZEN</a>
-            <a >Pricing</a>
-            <a >Forum</a>
-        </div>
-        <div class="menu tool">
-            <a href="">Join</a>
-        </div>
-    </header>
+    <div class="logo">
+        <img src="/img/logo.png"/>THEME.<span>com</span>
+    </div>
+    <div class="menu">
+        <a >Home</a>
+        <a >Themes</a>
+        <a >ZEN</a>
+        <a >Pricing</a>
+        <a >Forum</a>
+    </div>
 </header>
 <div class="content page-login box-center">
     <div class="box signup">

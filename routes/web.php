@@ -45,7 +45,7 @@ Route::group(['middleware' => ['auth']], function() {
     });
 });
 
-Route::group(['middleware' => []], function() {
+Route::group(['middleware' => ['auth']], function() {
     Route::get('/plan', 'MainController@showPlan');
     Route::get('/plan/{membership}', 'MainController@showPlanDetails');
 

@@ -5,21 +5,16 @@
 </head>
 <body>
 <header>
-    <header>
-        <div class="logo">
-            <img src="{{ asset('img/logo.png') }}"/>THEME.<span>com</span>
-        </div>
-        <div class="menu">
-            <a >Home</a>
-            <a >Themes</a>
-            <a >ZEN</a>
-            <a >Pricing</a>
-            <a >Forum</a>
-        </div>
-        <div class="menu tool">
-            <a href="">Join</a>
-        </div>
-    </header>
+    <div class="logo">
+        <img src="{{ asset('img/logo.png') }}"/>THEME.<span>com</span>
+    </div>
+    <div class="menu">
+        <a >Home</a>
+        <a >Themes</a>
+        <a >ZEN</a>
+        <a >Pricing</a>
+        <a >Forum</a>
+    </div>
 </header>
 <div class="content page-login box-center">
     <div class="box login">
@@ -51,5 +46,12 @@
     </div>
 </div>
 <script src="{{ asset('lib/less.min.js') }}" type="text/javascript"></script>
+@if($errors->count() > 0)
+    <script>
+        window.onload = function() {
+            alert("{!! $errors->first() !!}");
+        };
+    </script>
+@endif
 </body>
 </html>
