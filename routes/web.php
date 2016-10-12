@@ -34,7 +34,6 @@ Route::get('password/email', function () { return view('sendemailsuccess'); })->
 Route::get('password/reset/{email}/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password_reset_token');
 Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 
-Route::get('/home', 'HomeController@index');
 Route::get('/themes', 'MainController@theme');
 
 Route::group(['middleware' => ['auth']], function() {
