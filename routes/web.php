@@ -30,7 +30,7 @@ Route::get('register/confirm/{confirm_code}', 'Auth\RegisterController@registerC
 // Password Reset Routes...
 Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm');
 Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail');
-Route::get('password/email', function () { return view('sendemailsuccess'); })->name('password_email_sent');
+Route::get('password/email', function () { return view('dashboard.sendemailsuccess'); })->name('password_email_sent');
 Route::get('password/reset/{email}/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password_reset_token');
 Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 

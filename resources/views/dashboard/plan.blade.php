@@ -96,14 +96,3 @@
         </div>
     </div>
 @endsection
-
-@section('footer')
-    <script src="/lib/less.min.js" type="text/javascript"></script>
-    @if($errors->count() > 0)
-        <script>
-            window.onload = function() {
-                alert("{!! $errors->first() !!}");
-            };
-        </script>
-    @endif
-@endsection

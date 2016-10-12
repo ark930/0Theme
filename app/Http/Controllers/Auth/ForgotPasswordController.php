@@ -41,7 +41,7 @@ class ForgotPasswordController extends Controller
 
     public function showLinkRequestForm()
     {
-        return view('forgot_password');
+        return view('dashboard.forgot_password');
     }
 
     public function sendResetLinkEmail(Request $request)

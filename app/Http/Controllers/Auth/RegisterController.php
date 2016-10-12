@@ -46,7 +46,7 @@ class RegisterController extends Controller
 
     public function showRegistrationForm()
     {
-        return view('signup');
+        return view('dashboard.signup');
     }
 
     /**
@@ -82,7 +82,7 @@ class RegisterController extends Controller
             return redirect($this->redirectTo);
         }
 
-        return view('sendemailsuccess');
+        return view('dashboard.sendemailsuccess');
     }
 
     public function registerConfirmWithCode(Request $request, $confirm_code)

@@ -34,7 +34,3 @@
         </div>
     </div>
 @endsection
-
-@section('footer')
-    <script src="/lib/less.min.js" type="text/javascript"></script>
-@endsection

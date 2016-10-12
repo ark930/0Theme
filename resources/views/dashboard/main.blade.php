@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('head')
-    <link rel="stylesheet" href="/lib/tagator.jquery.css"/>
+    <link rel="stylesheet" href="{{ asset('/lib/tagator.jquery.css') }}"/>
 @endsection
 
 @section('content')
@@ -160,17 +160,13 @@
 @endsection
 
 @section('footer')
-    <script src="/lib/less.min.js" type="text/javascript"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
     <script type="text/javascript">
-
         $(document).ready(function(){
 //        var i = $(".ip").html();
 //        $.get("http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js", { ip:i }, function(data){
 //            alert(data);
 //        });
-
-
             $(".tab li").click(function(){
                 $(".tab li").eq($(this).index()).addClass("cur").siblings().removeClass('cur');
                 $(".tab-content").hide().eq($(this).index()).show();

@@ -1,13 +1,13 @@
 <html>
 <head>
     <title>Zero Admin</title>
-    <link rel="stylesheet/less" type="text/css" href="/lib/style.less"/>
+    <link rel="stylesheet/less" type="text/css" href="{{ asset('/lib/style.less') }}"/>
     @yield('head')
 </head>
 <body>
     <header>
         <div class="logo">
-            <img src="/img/logo.png"/>THEME.<span>com</span>
+            <img src="{{ asset('/img/logo.png') }}"/>THEME.<span>com</span>
         </div>
         <div class="menu">
             <a >Home</a>
@@ -27,6 +27,15 @@
     </header>
 
     @yield('content')
+
+    <script src="{{ asset('/lib/less.min.js') }}" type="text/javascript"></script>
+    @if($errors->count() > 0)
+        <script>
+            window.onload = function() {
+                alert("{!! $errors->first() !!}");
+            };
+        </script>
+    @endif
 
     @yield('footer')
 </body>
