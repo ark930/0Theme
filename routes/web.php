@@ -42,17 +42,22 @@ Route::group(['middleware' => ['auth']], function() {
 
     // The following routes can be used when user confirmed the register email
     Route::group(['middleware' => ['register_confirm_check']], function() {
-        Route::get('/plan', 'MainController@showPlan');
-        Route::get('/plan/{membership}', 'MainController@showPlanDetails');
-        Route::get('/dashboard', 'MainController@dashboard');
+        // Plan Routes
+        Route::get('/plan', 'PlanController@showPlan');
+        Route::get('/plan/{membership}', 'PlanController@showPlanDetails');
 
+        // Payment Routes
         Route::post('/payment/create', 'PaymentController@create');
         Route::get('/payment/success', 'PaymentController@paySuccess');
         Route::get('/payment/fail', 'PaymentController@payFail');
         Route::get('/payment/sale', 'PaymentController@getSale');
 
+        // Dashboard Routes
+        Route::get('/dashboard', 'MainController@dashboard');
+
         // The following routes can be used by who is a non-free user
         Route::group(['middleware' => ['user_check']], function() {
+            // Theme Routes
             Route::post('/theme/download', 'ThemeController@download');
             Route::post('/theme/update/check', 'ThemeController@checkUpdate');
             Route::post('/theme/update', 'ThemeController@update');
