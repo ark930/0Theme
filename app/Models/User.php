@@ -146,7 +146,7 @@ class User extends Authenticatable
     public function saveRegisterInfo($ip = null)
     {
         $now = date('Y-m-d H:i:s');
-        $this['secret_key'] = str_random(30);
+        $this['secret_key'] = self::generateSecretKey();
         $this['register_at'] = $now;
         $this['first_login_at'] = $now;
         $this['last_login_at'] = $now;
@@ -195,6 +195,20 @@ class User extends Authenticatable
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new ResetPasswordNotification($this['email'], $token));
+    }
+
+    public static function generateSecretKey()
+    {
+        $counter = 3;
+        do {
+            $secretKey = strtoupper(str_random(30));
+            $user = User::where('secret_key', $secretKey)->first();
+            if(empty($user)) {
+                return $secretKey;
+            }
+        } while(--$counter > 0);
+
+        return null;
     }
 
 }
