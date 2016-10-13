@@ -90,17 +90,19 @@ class RegisterController extends Controller
         $user = User::where('register_confirm_code', $confirm_code)->first();
 
         if(empty($user)) {
-            return 'illegal url';
+            return view('errors.message', ['error' => 'This url is expired or invalid.']);
         }
         else if(!empty($user['register_at'])) {
-            return 'registered';
+            return view('errors.message', ['error' => 'This url is expired or invalid.']);
         } else {
             $user->saveRegisterInfo($request->ip());
             event(new LogEvent($request->ip(), $user, LogEvent::REGISTER_CONFIRM));
 
+            // logout
             $this->guard()->logout();
             $request->session()->flush();
             $request->session()->regenerate();
+
             return redirect('/register/done');
         }
     }

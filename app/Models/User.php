@@ -137,15 +137,10 @@ class User extends Authenticatable
         return false;
     }
 
-    public function emailConfirmed()
-    {
-        $this['register_at'] = date('Y-m-d H:i:s');
-        $this->save();
-    }
-
     public function saveRegisterInfo($ip = null)
     {
         $now = date('Y-m-d H:i:s');
+        $this['register_confirm_code'] = null;
         $this['secret_key'] = self::generateSecretKey();
         $this['register_at'] = $now;
         $this['first_login_at'] = $now;
@@ -183,8 +178,8 @@ class User extends Authenticatable
     public static function newUser($data)
     {
         $user = new User();
-        $user['name'] = $data['name'];
-        $user['email'] = $data['email'];
+        $user['name'] = trim($data['name']);
+        $user['email'] = trim($data['email']);
         $user['password'] = bcrypt($data['password']);
         $user['register_confirm_code'] = strtolower(str_random(30));
         $user->save();
