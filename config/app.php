@@ -166,7 +166,9 @@ return [
         /*
          * Package Service Providers...
          */
-
+        // for bug track
+        Bugsnag\BugsnagLaravel\BugsnagServiceProvider::class,
+        Sentry\SentryLaravel\SentryLaravelServiceProvider::class,
         //
 
         /*
@@ -226,6 +228,9 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
+        // for bug track
+        'Bugsnag' => Bugsnag\BugsnagLaravel\Facades\Bugsnag::class,
+        'Sentry' => Sentry\SentryLaravel\SentryFacade::class,
     ],
 
 ];

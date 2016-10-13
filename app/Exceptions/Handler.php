@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use Bugsnag\BugsnagLaravel\Facades\Bugsnag;
 use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
@@ -34,6 +35,13 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
+        // report exception to Bugsnag and Sentry
+        Bugsnag::notifyException($exception);
+        app('sentry')->captureException($exception);
+
+//        if ($this->shouldReport($exception)) {
+//        }
+
         parent::report($exception);
     }
 
