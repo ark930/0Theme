@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Session\TokenMismatchException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -47,6 +48,8 @@ class Handler extends ExceptionHandler
     {
         if ($exception instanceof TokenMismatchException) {
             return back()->withInput()->withErrors(['error' => 'Sorry, your session seems to have expired. Please try again.']);
+        } else if($exception instanceof NotFoundHttpException) {
+            return response()->view('errors.404', [], 404);
         }
 
         return parent::render($request, $exception);
