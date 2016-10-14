@@ -30,12 +30,12 @@ class Order extends Model
 
     public function payPalPayments()
     {
-        return $this->hasMany('App\Models\PaypalPayment');
+        return $this->hasMany('App\Models\PayPalPayment');
     }
 
     public function currentPayPalPayment()
     {
-        return $this->belongsTo('App\Models\PaypalPayment', 'payment_no');
+        return $this->belongsTo('App\Models\PayPalPayment', 'payment_no');
     }
 
     public static function makeOrderNo()

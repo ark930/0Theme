@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
-use App\Models\PaypalPayment;
+use App\Models\PayPalPayment;
 use App\Models\Product;
 use App\Models\User;
 use App\Repositories\OrderHandler;
@@ -65,7 +65,7 @@ class PaymentController extends Controller
         $paymentId = $request->input('paymentId');
         $payerId = $request->input('PayerID');
 
-        $payPalPayment = PaypalPayment::where('payment_id', $paymentId)->first();
+        $payPalPayment = PayPalPayment::where('payment_id', $paymentId)->first();
         $total = $payPalPayment['amount'];
         if(!empty($payPalPayment)) {
             try {
