@@ -49,13 +49,55 @@
                     </div>
                 </div>
 
-                <form method="POST" action="{{ url('/payment/create') }}" class="bottom">
+                <form method="POST" action="#" class="bottom">
                     {{ csrf_field() }}
-                    <input type="hidden" value="{{ $productId }}" name="product_id" placeholder="Product ID">
-                    <input type="hidden" value="{{ $paymentType }}" name="payment_type" placeholder="Payment type">
-                    <button type="submit">Pay on PayPal</button>
+                    <input type="hidden" value="{{ $productId }}" name="productId" id="productId" placeholder="Product ID">
+                    <input type="hidden" value="{{ $paymentType }}" name="paymentType" id="paymentType" placeholder="Payment type">
+                    <button type="submit" id ="payPalButton">Pay on PayPal</button>
                 </form>
             </div>
         </div>
     </div>
+@endsection
+
+@section('footer')
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+    <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $('#payPalButton').click(function(e) {
+            e.preventDefault();
+            $('#payPalButton').prop("disabled", true);
+
+            $.ajax({
+                url:'/payment/create',
+                data: {
+                    productId: $('#productId').val(),
+                    paymentType: $('#paymentType').val()
+                },
+                type:'post',
+                dataType:'json',
+                success: successHandler,
+                error : errorHandler
+            });
+        });
+
+        function successHandler(data)
+        {
+            console.log(data);
+            window.location.href = data.approveUrl;
+        }
+
+        function errorHandler(data)
+        {
+            $('#payPalButton').prop("disabled", false);
+            var error = JSON.parse(data.responseText);
+            console.log(error);
+            alert(error.error);
+        }
+    </script>
 @endsection

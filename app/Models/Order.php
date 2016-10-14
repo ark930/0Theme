@@ -12,6 +12,7 @@ class Order extends Model
     const UNPAY = 'unpay';
     const PAID = 'paid';
     const REFUNDED = 'refunded';
+    const CANCELLED = 'cancelled';
 
     public function getCreatedAtAttribute($value)
     {

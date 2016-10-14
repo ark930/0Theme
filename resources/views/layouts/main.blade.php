@@ -1,5 +1,7 @@
 <html>
 <head>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <title>Zero Admin</title>
     <link rel="stylesheet/less" type="text/css" href="{{ asset('/lib/style.less') }}"/>
     @yield('head')

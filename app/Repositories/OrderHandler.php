@@ -8,7 +8,7 @@ use PayPal\Api\Payment;
 
 class OrderHandler
 {
-    public function create($user, $product, $paymentType)
+    public static function create($user, $product, $paymentType)
     {
         $orderNo = Order::makeOrderNo();
 
@@ -20,6 +20,7 @@ class OrderHandler
 
         $order = new Order();
         $order['order_no'] = $orderNo;
+        $order['name'] = $product['name'];
         $order['payment_type'] = $paymentType;
         $order['price'] = $price;
         $order['pay_amount'] = $price;
@@ -31,20 +32,7 @@ class OrderHandler
         return $order;
     }
 
-    public function paid($paidAmount)
-    {
-        $order['paid_amount'] = $paidAmount;
-        $order['status'] = Order::PAID;
-        $order->save();
-    }
-
-    public function canceled()
-    {
-//        $order['status'] = Order::PAID;
-//        $order->save();
-    }
-
-    public function savePayPalPayment(Order $order, Payment $payment)
+    public static function savePayPalPayment(Order $order, Payment $payment)
     {
         $paymentDataArray = json_decode($payment, true);
 
@@ -62,5 +50,32 @@ class OrderHandler
         $order->payPalPayments()->save($payPalPayment);
         $order->currentPayPalPayment()->associate($payPalPayment);
         $order->save();
+    }
+
+    public static function paid($payerId, $payPalPayment, $payment)
+    {
+        $paymentArray = json_decode($payment, true);
+
+        $payPalPayment['payment_state'] = $paymentArray['state'];
+        $payPalPayment['execute_json'] = $payment;
+        $payPalPayment['payer_id'] = $payerId;
+        $payPalPayment['sale_id'] = $paymentArray['transactions'][0]['related_resources'][0]['sale']['id'];
+        $payPalPayment['sale_state'] = $paymentArray['transactions'][0]['related_resources'][0]['sale']['state'];
+        $payPalPayment['transaction_fee'] = $paymentArray['transactions'][0]['related_resources'][0]['sale']['transaction_fee']['value'];
+        $payPalPayment['payment_execute_at'] = date('Y-m-d H:i:s', strtotime($paymentArray['create_time']));
+        $payPalPayment->save();
+
+        $order = $payPalPayment->order;
+        $order['paid_amount'] = $paymentArray['transactions'][0]['related_resources'][0]['sale']['amount']['total'];
+        $order['status'] = Order::PAID;
+        $order->save();
+
+        return $order;
+    }
+
+    public function canceled()
+    {
+//        $order['status'] = Order::PAID;
+//        $order->save();
     }
 }

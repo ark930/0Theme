@@ -27,7 +27,7 @@ class CreateOrdersTable extends Migration
             $table->decimal('pay_amount')->nullable();
             $table->decimal('paid_amount')->nullable();
             $table->decimal('refund_amount')->nullable();
-            $table->enum('status', ['unpay', 'paid', 'refunded'])->default('unpay');
+            $table->enum('status', ['unpay', 'paid', 'refunded', 'cancelled'])->default('unpay');
             $table->timestamps();
         });
 
