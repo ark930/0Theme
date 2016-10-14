@@ -48,15 +48,10 @@ class PaymentController extends Controller
         $successUrl = sprintf('%s/%s?oid=%s', $request->root(), 'payment/success', $order['id']);
         $failUrl = sprintf('%s/%s?oid=%s', $request->root(), 'payment/fail', $order['id']);
 
-        try {
-            $payment = $payPal->createPaymentUsingPayPal($product['name'], $order['order_no'], $order['pay_amount'], $successUrl, $failUrl);
+        $payment = $payPal->createPaymentUsingPayPal($product['name'], $order['order_no'], $order['pay_amount'], $successUrl, $failUrl);
+        $orderHandler->savePayPalPayment($order, $payment);
 
-            $orderHandler->savePayPalPayment($order, $payment);
-
-            return redirect($payment->getApprovalLink());
-        } catch (\Exception $exception) {
-            return back()->withErrors('Something wrong happened while paying, please try again.');
-        }
+        return redirect($payment->getApprovalLink());
     }
 
     public function paySuccess(Request $request, PayPal $payPal)

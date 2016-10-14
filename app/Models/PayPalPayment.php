@@ -6,8 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class PayPalPayment extends Model
 {
+    protected $table = 'paypal_payment';
+
     public function order()
     {
         return $this->belongsTo('App\Models\Order');
     }
+
 }
