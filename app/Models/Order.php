@@ -28,12 +28,12 @@ class Order extends Model
         return $this->belongsTo('App\Models\Product');
     }
 
-    public function paypalPayments()
+    public function payPalPayments()
     {
         return $this->hasMany('App\Models\PaypalPayment');
     }
 
-    public function currentPaypalPayment()
+    public function currentPayPalPayment()
     {
         return $this->belongsTo('App\Models\PaypalPayment', 'payment_no');
     }

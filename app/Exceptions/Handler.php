@@ -37,10 +37,10 @@ class Handler extends ExceptionHandler
     {
         // report exception to Bugsnag and Sentry
         Bugsnag::notifyException($exception);
-        app('sentry')->captureException($exception);
 
-//        if ($this->shouldReport($exception)) {
-//        }
+        if ($this->shouldReport($exception)) {
+            app('sentry')->captureException($exception);
+        }
 
         parent::report($exception);
     }

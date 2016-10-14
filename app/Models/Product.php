@@ -45,4 +45,13 @@ class Product extends Model
     {
         return self::find(self::LIFETIME_PRODUCT_ID);
     }
+
+    public function isProProduct()
+    {
+        if(self::PRO_PRODUCT_ID == $this['id']) {
+            return true;
+        }
+
+        return false;
+    }
 }
