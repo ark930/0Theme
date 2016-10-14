@@ -56,4 +56,19 @@ class Order extends Model
 
         return strtoupper(15);
     }
+
+    public function getPaymentLink()
+    {
+        $product = $this->product;
+
+        $membership = null;
+        if($product['type'] == Product::TYPE_THEME) {
+            $membership = User::MEMBERSHIP_BASIC;
+
+            return sprintf( '/plan/%s?theme=%s', $membership, $product->theme['name']);
+        }
+
+        $membership = $product['type'];
+        return sprintf('/plan/%s', $membership);
+    }
 }
