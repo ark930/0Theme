@@ -23,10 +23,7 @@ Route::post('logout', 'Auth\LoginController@logout');
 // Registration Routes...
 Route::get('register', 'Auth\RegisterController@showRegistrationForm');
 Route::post('register', 'Auth\RegisterController@register');
-Route::get('register/confirm/{confirm_code}', 'Auth\RegisterController@registerConfirmWithCode')
-//     ->where('confirm_code', '[0-9a-zA-Z]+')
-     ->name('register_confirm_with_code');
-Route::get('register/done', 'Auth\RegisterController@registerDone');
+
 
 // Password Reset Routes...
 Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm');
@@ -40,6 +37,9 @@ Route::get('/themes', 'MainController@theme');
 // The following routes can be used when user login
 Route::group(['middleware' => ['auth']], function() {
     Route::get('register/confirm', 'Auth\RegisterController@registerConfirmPage')->name('register_confirm');
+    Route::get('register/confirm/{confirm_code}', 'Auth\RegisterController@registerConfirmWithCode')
+        ->where('confirm_code', '[0-9a-zA-Z]+')
+        ->name('register_confirm_with_code');
 
     // The following routes can be used when user confirmed the register email
     Route::group(['middleware' => ['register_confirm_check']], function() {

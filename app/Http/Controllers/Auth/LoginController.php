@@ -31,9 +31,16 @@ class LoginController extends Controller
 
     public function __construct()
     {
-//        $this->middleware('guest', ['except' => 'logout']);
+        $this->middleware('guest', ['except' => 'logout']);
     }
 
+    /**
+     * Login page
+     *
+     * Route: GET /login
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function showLoginForm()
     {
         return view('dashboard.login');
@@ -41,6 +48,8 @@ class LoginController extends Controller
 
     /**
      * Log the user out of the application.
+     *
+     * Route: POST /logout
      *
      * @param  Request  $request
      * @return \Illuminate\Http\Response
@@ -52,7 +61,7 @@ class LoginController extends Controller
         $request->session()->flush();
         $request->session()->regenerate();
 
-        return redirect('/');
+        return redirect('/login');
     }
 
     /**
@@ -74,7 +83,7 @@ class LoginController extends Controller
             return redirect('/plan');
         }
 
-        // return false to do the default action
+        // return false to do the default action (Redirect to $redirectTo)
         return false;
     }
 }

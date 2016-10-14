@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Auth;
 use App\Events\LogEvent;
 use App\Notifications\ConfirmRegisterNotification;
 use App\Models\User;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Validator;
@@ -41,12 +40,100 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-//        $this->middleware('guest', ['except' => ['registerConfirmPage', 'registerConfirmWithCode']]);
+        $this->middleware('guest', ['except' => ['registerConfirmPage', 'registerConfirmWithCode']]);
     }
 
+    /**
+     * Register page
+     *
+     * Route: GET /register
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function showRegistrationForm()
     {
         return view('dashboard.signup');
+    }
+
+    /**
+     * Register request
+     *
+     * Route: POST /register
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function register(Request $request)
+    {
+        // validate parameters
+        $this->validator($request->all())->validate();
+
+        // create user
+        $user = $this->create($request->all());
+
+        // login
+        $this->guard()->login($user);
+
+        // Send confirm register email to user
+        $user->notify(new ConfirmRegisterNotification());
+
+        event(new LogEvent($request->ip(), $user, LogEvent::REGISTER));
+
+        return redirect()->route('register_confirm');
+    }
+
+    /**
+     * Register confirm page
+     *
+     * Route: GET /register/confirm
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
+     */
+    public function registerConfirmPage()
+    {
+        $user = Auth::user();
+        if(!empty($user) && $user->isRegisterConfirmed()) {
+            return redirect($this->redirectTo);
+        }
+
+        return view('dashboard.sendemailsuccess');
+    }
+
+    /**
+     * Register confirm from email
+     *
+     * Route: GET /register/confirm/{confirm_code}
+     *
+     * @param Request $request
+     * @param $confirm_code
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
+     */
+    public function registerConfirmWithCode(Request $request, $confirm_code)
+    {
+        $user = Auth::user();
+        if(!empty($user) && $user->isRegisterConfirmed()) {
+            return redirect($this->redirectTo);
+        }
+
+        $user = User::where('register_confirm_code', $confirm_code)->first();
+
+        if(empty($user)) {
+            return view('errors.message', ['error' => 'This url is expired or invalid.']);
+        } else if(!empty($user['register_at'])) {
+            return view('errors.message', ['error' => 'This url is expired or invalid.']);
+        } else {
+            $user->saveRegisterInfo($request->ip());
+            event(new LogEvent($request->ip(), $user, LogEvent::REGISTER_CONFIRM));
+
+            // logout
+            $this->guard()->logout();
+            $request->session()->flush();
+            $request->session()->regenerate();
+
+            return view('dashboard.register_done');
+        }
     }
 
     /**
@@ -73,56 +160,5 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         return User::newUser($data);
-    }
-
-    public function registerConfirmPage()
-    {
-        $user = Auth::user();
-        if(!empty($user) && $user->isRegisterConfirmed()) {
-            return redirect($this->redirectTo);
-        }
-
-        return view('dashboard.sendemailsuccess');
-    }
-
-    public function registerConfirmWithCode(Request $request, $confirm_code)
-    {
-        $user = User::where('register_confirm_code', $confirm_code)->first();
-
-        if(empty($user)) {
-            return view('errors.message', ['error' => 'This url is expired or invalid.']);
-        }
-        else if(!empty($user['register_at'])) {
-            return view('errors.message', ['error' => 'This url is expired or invalid.']);
-        } else {
-            $user->saveRegisterInfo($request->ip());
-            event(new LogEvent($request->ip(), $user, LogEvent::REGISTER_CONFIRM));
-
-            // logout
-            $this->guard()->logout();
-            $request->session()->flush();
-            $request->session()->regenerate();
-
-            return redirect('/register/done');
-        }
-    }
-
-    public function registerDone()
-    {
-        return view('dashboard.register_done');
-    }
-
-    public function register(Request $request)
-    {
-        $this->validator($request->all())->validate();
-
-        // trigger event
-        $user = $this->create($request->all());
-        event(new LogEvent($request->ip(), $user, LogEvent::REGISTER));
-        $user->notify(new ConfirmRegisterNotification());
-
-        $this->guard()->login($user);
-
-        return redirect($this->redirectPath());
     }
 }
