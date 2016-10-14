@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class PayPalPayment extends Model
 {
-    protected $table = 'paypal_payment';
+    protected $table = 'paypal_payments';
 
     public function order()
     {
