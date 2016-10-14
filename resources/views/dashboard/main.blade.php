@@ -152,11 +152,11 @@
                             @else
                                 <td>{{ $product['name'] }}</td>
                             @endif
-                            <td>contact@baohan.me<span>{{ $order['payment_type'] }}</span></td>
+                            <td>{{ $order->currentPayPalPayment['payer_email'] }}<span>{{ $order['payment_type'] }}</span></td>
                             <td>{{ $order['order_no'] }}</td>
                             <td>{{ $order['created_at'] }}</td>
                             <td>+${{ $order['price'] }}</td>
-                            <td>{{ $order['status'] }}</td>
+                            <td>{{ ucfirst($order['status']) }}</td>
                         </tr>
                     @endforeach
                     </tbody>

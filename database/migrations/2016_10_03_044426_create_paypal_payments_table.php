@@ -28,6 +28,7 @@ class CreatePaypalPaymentsTable extends Migration
 
             $table->json('execute_json')->nullable()->comment('Execute Payment时返回的原始数据');
             $table->string('payer_id', 50)->nullable()->comment('付款人ID');
+            $table->string('payer_email')->nullable()->comment('付款人Email');
             $table->string('sale_id', 50)->nullable();
             $table->string('sale_state', 20)->nullable()->comment('sale状态, completed: The transaction has completed.; partially_refunded: The transaction was partially refunded; pending: The transaction is pending; refunded:The transaction was fully refunded; denied: The transaction was denied');
             $table->decimal('transaction_fee')->nullable()->comment('PayPal收取的交易费用');

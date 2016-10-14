@@ -17,7 +17,7 @@ class CreateOrdersTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('product_id')->nullable();
-            $table->char('order_no', 12)->unique();
+            $table->string('order_no', 15)->unique();
             $table->string('name');
             $table->text('description')->nullable();
             $table->enum('payment_type', ['paypal']);

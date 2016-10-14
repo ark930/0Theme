@@ -10,7 +10,7 @@ class OrderHandler
 {
     public static function create($user, $product, $paymentType)
     {
-        $orderNo = Order::makeOrderNo();
+        $orderNo = Order::generateOrderNo();
 
         $price = $product['price'];
         $productHandler = new ProductHandler();
@@ -59,6 +59,7 @@ class OrderHandler
         $payPalPayment['payment_state'] = $paymentArray['state'];
         $payPalPayment['execute_json'] = $payment;
         $payPalPayment['payer_id'] = $payerId;
+        $payPalPayment['payer_email'] = $paymentArray['payer']['payer_info']['email'];
         $payPalPayment['sale_id'] = $paymentArray['transactions'][0]['related_resources'][0]['sale']['id'];
         $payPalPayment['sale_state'] = $paymentArray['transactions'][0]['related_resources'][0]['sale']['state'];
         $payPalPayment['transaction_fee'] = $paymentArray['transactions'][0]['related_resources'][0]['sale']['transaction_fee']['value'];
