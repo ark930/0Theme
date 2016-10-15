@@ -74,15 +74,6 @@ class User extends Authenticatable
         return !empty($this['register_at']) ? true : false;
     }
 
-    public function isFreeUser()
-    {
-        return !in_array($this['membership'], [
-            self::MEMBERSHIP_BASIC,
-            self::MEMBERSHIP_PRO,
-            self::MEMBERSHIP_LIFETIME,
-        ]);
-    }
-
     public function activeWebsites($theme_id)
     {
         $activeWebsites = $this->themeActiveWebsites->where('id', $theme_id)->all();
@@ -95,35 +86,29 @@ class User extends Authenticatable
         return $domains;
     }
 
+    public function isFreeUser()
+    {
+        return $this['membership'] === self::MEMBERSHIP_FREE;
+    }
+
     public function isAdvanceUser()
     {
-        if($this['membership'] === self::MEMBERSHIP_PRO) {
-            return true;
-
-            if($this['pro_to'] >= time()) {
-                return true;
-            } else {
-//                $this->membershipTo(self::MEMBERSHIP_FREE);
-            }
-        } else if($this['membership'] === self::MEMBERSHIP_LIFETIME) {
-            return true;
-        }
-
-        return false;
+        return $this->isProUser() || $this->isLifetimeUser();
     }
 
     public function isBasicUser()
     {
-        if($this['membership'] === self::MEMBERSHIP_BASIC) {
-            return true;
-            if($this['basic_to'] >= time()) {
-                return true;
-            } else {
-//                $this->membershipTo(self::MEMBERSHIP_FREE);
-            }
-        }
+        return $this['membership'] === self::MEMBERSHIP_BASIC;
+    }
 
-        return false;
+    public function isProUser()
+    {
+        return $this['membership'] === self::MEMBERSHIP_PRO;
+    }
+
+    public function isLifetimeUser()
+    {
+        return $this['membership'] === self::MEMBERSHIP_LIFETIME;
     }
 
     public function hasTheme($theme_id)
@@ -166,13 +151,28 @@ class User extends Authenticatable
     {
         $this['membership'] = $membership;
 
-        if($membership == self::MEMBERSHIP_PRO) {
-            $now = Carbon::now();
-            $this['pro_from'] = clone $now;
-            $this['pro_to'] = $now->addYear(1);
-        }
+//        if($membership === self::MEMBERSHIP_PRO) {
+//            $now = Carbon::now();
+//            $this['pro_from'] = clone $now;
+//            $this['pro_to'] = $now->addYear(1);
+//        }
 
         $this->save();
+    }
+
+    public function membershipToBasic()
+    {
+        $this->membershipTo(self::MEMBERSHIP_BASIC);
+    }
+
+    public function membershipToPro()
+    {
+        $this->membershipTo(self::MEMBERSHIP_PRO);
+    }
+
+    public function membershipToLifetime()
+    {
+        $this->membershipTo(self::MEMBERSHIP_LIFETIME);
     }
 
     public static function newUser($data)

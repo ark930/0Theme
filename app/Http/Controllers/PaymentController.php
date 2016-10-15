@@ -8,7 +8,7 @@ use App\Models\Product;
 use App\Models\User;
 use App\Repositories\OrderHandler;
 use App\Repositories\PayPal;
-use Carbon\Carbon;
+use App\Repositories\PlanHandler;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -38,17 +38,18 @@ class PaymentController extends Controller
         }
 
         $user = Auth::user();
-        if($user['membership'] == User::MEMBERSHIP_LIFETIME) {
+        if($user->isLifetimeUser()) {
             return response()->json([
                 'error' => 'You are already a LIFETIME user',
             ], 400);
-        } else if($user['membership'] == User::MEMBERSHIP_PRO) {
-            if($product['type'] != Product::TYPE_LIFETIME) {
-                return response()->json([
-                    'error' => 'You are already a PRO user',
-                ], 400);
-            }
         }
+//        else if($user->isProUser()) {
+//            if($product['type'] != Product::TYPE_LIFETIME) {
+//                return response()->json([
+//                    'error' => 'You are already a PRO user',
+//                ], 400);
+//            }
+//        }
 
         $order = OrderHandler::create($user, $product, $paymentType);
 
@@ -103,22 +104,17 @@ class PaymentController extends Controller
             'total' => $order['paid_amount'],
         ];
         if($product['type'] == Product::TYPE_LIFETIME) {
-            $user->membershipTo(User::MEMBERSHIP_LIFETIME);
+            PlanHandler::doLifetimePlan($user);
 
             $data['membership'] = User::MEMBERSHIP_LIFETIME;
             $data['period'] = 'Forever';
         } else if($product['type'] == Product::TYPE_PRO) {
-            $user->membershipTo(User::MEMBERSHIP_PRO);
+            PlanHandler::doProPlan($user);
 
             $data['membership'] = User::MEMBERSHIP_PRO;
             $data['period'] = '1 Year';
         } else if($product['type'] == Product::TYPE_THEME) {
-            $now = Carbon::now();
-            $user->membershipTo(User::MEMBERSHIP_BASIC);
-            $user->themes()->attach($product->theme, [
-                'basic_from' => clone $now,
-                'basic_to' => $now->addYear(1),
-            ]);
+            PlanHandler::doBasicPlan($user, $product);
 
             $data['membership'] = User::MEMBERSHIP_BASIC;
             $data['period'] = '1 Year';

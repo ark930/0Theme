@@ -20,6 +20,8 @@ class PlanController extends Controller
 
     public function showPlanDetails(Request $request, $membership)
     {
+        $membership = strtolower($membership);
+
         $user = Auth::user();
 
         $data = [
@@ -37,7 +39,7 @@ class PlanController extends Controller
             'productId' =>null,
         ];
 
-        if(User::MEMBERSHIP_BASIC === strtolower($membership)) {
+        if(User::MEMBERSHIP_BASIC === $membership) {
             $themeName = $request->input('theme');
             if(!empty($themeName)) {
                 $basicProduct = Product::where('name', $themeName)
@@ -70,7 +72,7 @@ class PlanController extends Controller
                     ],
                 ]);
             }
-        } else if(User::MEMBERSHIP_PRO === strtolower($membership)) {
+        } else if(User::MEMBERSHIP_PRO === $membership) {
             $proProduct = Product::getProProduct();
             $lifetimeProduct = Product::getLifetimeProduct();
 
@@ -91,7 +93,7 @@ class PlanController extends Controller
                 ],
                 'productId' => $proProduct['id'],
             ]);
-        } else if(User::MEMBERSHIP_LIFETIME === strtolower($membership)) {
+        } else if(User::MEMBERSHIP_LIFETIME === $membership) {
             $lifetimeProduct = Product::getLifetimeProduct();
             $data = array_merge($data, [
                 'price' => $lifetimeProduct['price'],

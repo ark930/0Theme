@@ -45,7 +45,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::group(['middleware' => ['register_confirm_check']], function() {
         // Plan Routes
         Route::get('/plan', 'PlanController@showPlan');
-        Route::get('/plan/{membership}', 'PlanController@showPlanDetails');
+        Route::get('/plan/{membership}', 'PlanController@showPlanDetails')->where('membership', 'basic|pro|lifetime');
 
         // Payment Routes
         Route::post('/payment/create', 'PaymentController@create');
