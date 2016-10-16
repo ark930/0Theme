@@ -14,6 +14,7 @@ class CreateThemeDownloadsTable extends Migration
     public function up()
     {
         Schema::create('theme_downloads', function (Blueprint $table) {
+            $table->bigIncrements('id');
             $table->unsignedBigInteger('theme_version_id');
             $table->unsignedBigInteger('user_id');
             $table->timestamp('download_at')->default(DB::raw('CURRENT_TIMESTAMP'));
@@ -32,6 +33,6 @@ class CreateThemeDownloadsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('theme_downloads');
+        Schema::dropIfExists('theme_downloads');
     }
 }

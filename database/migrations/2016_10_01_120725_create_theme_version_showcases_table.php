@@ -18,6 +18,7 @@ class CreateThemeVersionShowcasesTable extends Migration
             $table->unsignedBigInteger('theme_version_id');
             $table->string('name');
             $table->string('title');
+            $table->timestamps();
         });
     }
 
@@ -28,6 +29,6 @@ class CreateThemeVersionShowcasesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('theme_version_showcases');
+        Schema::dropIfExists('theme_version_showcases');
     }
 }

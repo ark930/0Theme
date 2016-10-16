@@ -41,6 +41,6 @@ class CreateThemeVersionsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('theme_versions');
+        Schema::dropIfExists('theme_versions');
     }
 }

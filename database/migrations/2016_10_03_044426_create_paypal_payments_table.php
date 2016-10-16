@@ -45,6 +45,6 @@ class CreatePaypalPaymentsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('paypal_payments');
+        Schema::dropIfExists('paypal_payments');
     }
 }

@@ -14,6 +14,7 @@ class CreateUserThemeSitesTable extends Migration
     public function up()
     {
         Schema::create('user_theme_sites', function (Blueprint $table) {
+            $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('theme_id');
             $table->string('website_domain')->comment('用户激活主题的网站域名');
@@ -28,6 +29,6 @@ class CreateUserThemeSitesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('user_theme_sites');
+        Schema::dropIfExists('user_theme_sites');
     }
 }

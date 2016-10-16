@@ -14,10 +14,12 @@ class CreateThemeVersionTagsTable extends Migration
     public function up()
     {
         Schema::create('theme_version_tags', function (Blueprint $table) {
+            $table->bigIncrements('id');
             $table->unsignedBigInteger('theme_version_id');
             $table->unsignedBigInteger('tag_id');
+            $table->timestamps();
 
-            $table->primary(['theme_version_id', 'tag_id']);
+            $table->unique(['theme_version_id', 'tag_id']);
         });
     }
 
@@ -28,6 +30,6 @@ class CreateThemeVersionTagsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('theme_version_tags');
+        Schema::dropIfExists('theme_version_tags');
     }
 }
