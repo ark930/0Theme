@@ -74,6 +74,7 @@ class PayPal
             ->setPayer($payer)
             ->setRedirectUrls($redirectUrls)
             ->setNoteToPayer('一些对产品的介绍 你可以看到吗 哈哈哈哈哈哈哈哈哈哈')
+            ->setExperienceProfileId(env('PAYPAL_EXPERIENCE_ID'))
             ->setTransactions(array($transaction));
 
         $payment->create($this->apiContext);
@@ -217,7 +218,7 @@ class PayPal
         // landing page type information
         $flowConfig = new FlowConfig();
         // Type of PayPal page to be displayed when a user lands on the PayPal site for checkout. Allowed values: Billing or Login. When set to Billing, the Non-PayPal account landing page is used. When set to Login, the PayPal account login landing page is used.
-        $flowConfig->setLandingPageType("Billing");
+        $flowConfig->setLandingPageType("Login");
         // The URL on the merchant site for transferring to after a bank transfer payment.
         $flowConfig->setBankTxnPendingUrl("http://www.0theme.com/");
 
@@ -263,4 +264,3 @@ class PayPal
         return $createProfileResponse;
     }
 }
-

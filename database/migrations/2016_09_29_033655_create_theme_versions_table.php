@@ -17,7 +17,7 @@ class CreateThemeVersionsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('theme_id');
             $table->string('author', 50)->nullable();
-            $table->char('sha1', 40);
+            $table->char('sha256', 64);
             $table->string('version', 20);
             $table->string('requirements');
             $table->string('document_url');

@@ -15,7 +15,7 @@ class ThemeController extends Controller
         }
 
         $themeDownloadPath = $userRepositories->getThemeDownloadUrl($theme_id);
-        if($userRepositories->verifyBySHA1($theme_id, $themeDownloadPath)) {
+        if($userRepositories->verifyBySHA256($theme_id, $themeDownloadPath)) {
             return response()->download($themeDownloadPath);
         }
 

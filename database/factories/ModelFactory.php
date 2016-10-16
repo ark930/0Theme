@@ -47,7 +47,7 @@ $factory->define(App\Models\Theme::class, function (Faker\Generator $faker) {
 $factory->define(App\Models\ThemeVersion::class, function (Faker\Generator $faker) {
     return [
         'author' => $faker->name,
-        'sha1' => $faker->sha1,
+        'sha256' => $faker->sha256,
         'version' => '1.0.1',
         'requirements' => $faker->sentence,
         'document_url' => $faker->url,
