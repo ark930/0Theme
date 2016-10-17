@@ -4,13 +4,13 @@ namespace App\Models;
 
 use App\Notifications\ResetPasswordNotification;
 use App\Repositories\CommonDate;
-use Carbon\Carbon;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use Notifiable, CommonDate;
+    use HasApiTokens, Notifiable, CommonDate;
 
     const MEMBERSHIP_FREE = 'free';
     const MEMBERSHIP_BASIC = 'basic';
@@ -42,7 +42,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password',
+        'password', 'remember_token', 'register_confirm_code', 'secret_key',
     ];
 
     public function downloads()

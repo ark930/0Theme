@@ -28,6 +28,7 @@
                     <label>Member</label>
                     <h3>{{ ucfirst($user['membership']) }}</h3>
                 </div>
+
                 @if($user['membership'] == \App\Models\User::MEMBERSHIP_PRO)
                     <div class="form-group">
                         <label>Start with</label>
@@ -38,27 +39,33 @@
                         <h3>{{ $user['pro_to'] }}</h3>
                     </div>
                 @endif
-                @if($user['membership'] == \App\Models\User::MEMBERSHIP_BASIC
-                    || $user['membership'] == \App\Models\User::MEMBERSHIP_BASIC)
-                    <div class="form-group link">
-                        <!--renew 在basic上是没有的-->
-                        <!--<a href="#" class="button">Renew</a>-->
-                        <!--注释要删除-->
-                        <!--文案逻辑为:-->
-                        <!--1.如果是basic,并在一个月内,补足差价升级pro,注意这里的差价是pro当前折扣价格（销售价格） 减去 basic 购买时的价格。-->
-                        <a href="{{ url('/plan/pro') }}" class="button line">Upgrade to Pro ($30）</a>
-                        <label>27days left</label>
-                        <!--2.如果超过一个月了,需要全额升级-->
-                        <!--<a href="#" class="button">Buy Pro（$149）</a>-->
-                        <!--3.如果是Pro用户,可以永久差价,升级Lifetime,Lifetime终生不打折-->
-                        <!--<a href="#" class="button">Upgrade to Lifetime ($79）</a>-->
-                    </div>
-                @endif
 
-                @if($user['membership'] != \App\Models\User::MEMBERSHIP_LIFETIME)
+                @if($user->isFreeUser())
                     <div class="form-group link">
-                        <a href="{{ url('/plan/lifetime') }}" class="button line">Upgrade to Lifetime ($249）</a>
+                        <a href="{{ url('/plan') }}" class="button line">Choose A Plan</a>
                     </div>
+                @else
+                    @if($user->isBasicUser())
+                        <div class="form-group link">
+                            <!--renew 在basic上是没有的-->
+                            <!--<a href="#" class="button">Renew</a>-->
+                            <!--注释要删除-->
+                            <!--文案逻辑为:-->
+                            <!--1.如果是basic,并在一个月内,补足差价升级pro,注意这里的差价是pro当前折扣价格（销售价格） 减去 basic 购买时的价格。-->
+                            <a href="{{ url('/plan/pro') }}" class="button line">Upgrade to Pro ($30）</a>
+                            <label>27days left</label>
+                            <!--2.如果超过一个月了,需要全额升级-->
+                            <!--<a href="#" class="button">Buy Pro（$149）</a>-->
+                            <!--3.如果是Pro用户,可以永久差价,升级Lifetime,Lifetime终生不打折-->
+                            <!--<a href="#" class="button">Upgrade to Lifetime ($79）</a>-->
+                        </div>
+                    @endif
+
+                    @if(!$user->isLifetimeUser())
+                        <div class="form-group link">
+                            <a href="{{ url('/plan/lifetime') }}" class="button line">Upgrade to Lifetime ($249）</a>
+                        </div>
+                    @endif
                 @endif
             </div>
         </div>
@@ -148,9 +155,9 @@
                         <?php $product = $order->product ?>
                         <tr>
                             @if($product['type'] == \App\Models\Product::TYPE_THEME)
-                                <td>Basic<span>{{ $product['name'] }}</span></td>
+                                <td>Basic<span>{{ $order['name'] }}</span></td>
                             @else
-                                <td>{{ $product['name'] }}</td>
+                                <td>{{ $order['name'] }}</td>
                             @endif
                             <td>{{ $order->currentPayPalPayment['payer_email'] }}<span>{{ $order['payment_type'] }}</span></td>
                             <td>{{ $order['order_no'] }}</td>

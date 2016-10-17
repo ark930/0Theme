@@ -6,6 +6,7 @@ use App\Events\LogEvent;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
 
 class LoginController extends Controller
 {
@@ -41,9 +42,11 @@ class LoginController extends Controller
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function showLoginForm()
+    public function showLoginForm(Request $request)
     {
-        return view('dashboard.login');
+        $target = $request->input('target');
+
+        return view('dashboard.login', compact('target'));
     }
 
     /**
@@ -52,7 +55,7 @@ class LoginController extends Controller
      * Route: POST /logout
      *
      * @param  Request  $request
-     * @return \Illuminate\Http\Response
+     * @return mixed
      */
     public function logout(Request $request)
     {
@@ -61,7 +64,8 @@ class LoginController extends Controller
         $request->session()->flush();
         $request->session()->regenerate();
 
-        return redirect('/login');
+        return redirect('/login')
+            ->withCookie(Cookie::forget('forum_token', config('session.path'), config('session.domain')));
     }
 
     /**
@@ -77,13 +81,19 @@ class LoginController extends Controller
         $user->saveLoginInfo($request->ip());
         event(new LogEvent($request->ip(), $this->guard()->user(), LogEvent::LOGIN));
 
-        if($user->isRegisterConfirmed() == false) {
-            return redirect('/register/confirm');
+        if($request->has('target') && strtolower($request->input('target')) == 'forum') {
+            $this->redirectTo = 'http://forum.theme.com:8001';
+        } else if($user->isRegisterConfirmed() == false) {
+            redirect()->intended('/register/confirm');
         } else if($user->isFreeUser() == true) {
-            return redirect('/plan');
+            $this->redirectTo = '/plan';
         }
 
-        // return false to do the default action (Redirect to $redirectTo)
-        return false;
+        $token = $user->createToken('access_token')->accessToken;
+        $request->session()->put('forum_token', $token);
+        $config = config('session');
+
+        return redirect()->intended($this->redirectPath())
+            ->withCookie('forum_token', $token, $config['lifetime'], $config['path'], $config['domain'], $config['secure'], false);
     }
 }

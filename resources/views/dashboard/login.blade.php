@@ -21,6 +21,9 @@
                     </span>
                     @endif
 
+                    @if(null != $target)
+                        <input type="hidden" name="target" value="{{ $target }}">
+                    @endif
                     <label>
                         <input type="checkbox" name="remember" class="checkbox"> <span>Stay Logged In</span>
                     </label>
