@@ -82,7 +82,7 @@ class LoginController extends Controller
         event(new LogEvent($request->ip(), $this->guard()->user(), LogEvent::LOGIN));
 
         if($request->has('target') && strtolower($request->input('target')) == 'forum') {
-            $this->redirectTo = 'http://forum.theme.com:8001';
+            $this->redirectTo = env('FORUM_URL');
         } else if($user->isRegisterConfirmed() == false) {
             redirect()->intended('/register/confirm');
         } else if($user->isFreeUser() == true) {
