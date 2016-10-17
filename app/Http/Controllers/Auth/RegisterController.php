@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Events\LogEvent;
+use App\Models\ForumUser;
 use App\Notifications\ConfirmRegisterNotification;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -71,6 +72,9 @@ class RegisterController extends Controller
 
         // create user
         $user = $this->create($request->all());
+        
+        // create forum user
+        ForumUser::newUser($user['name'], $user['email'], $user['created_at']);
 
         // login
         $this->guard()->login($user);

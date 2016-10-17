@@ -66,6 +66,20 @@ return [
             'engine' => null,
         ],
 
+        'mysql_forum' => [
+            'driver' => 'mysql',
+            'host' => env('FORUM_DB_HOST', 'localhost'),
+            'port' => env('FORUM_DB_PORT', '3306'),
+            'database' => env('FORUM_DB_DATABASE', 'forge'),
+            'username' => env('FORUM_DB_USERNAME', 'forge'),
+            'password' => env('FORUM_DB_PASSWORD', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'strict' => true,
+            'engine' => null,
+        ],
+
         'pgsql' => [
             'driver' => 'pgsql',
             'host' => env('DB_HOST', 'localhost'),
