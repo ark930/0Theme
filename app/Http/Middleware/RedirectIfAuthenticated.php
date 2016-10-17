@@ -20,14 +20,13 @@ class RedirectIfAuthenticated
         if (Auth::guard($guard)->check()) {
             if($request->path() == 'login') {
                 if ($request->has('target') && strtolower($request->input( 'target' )) == 'forum') {
-                    $this->redirectTo = 'http://forum.theme.com:8001';
-
                     $token = Auth::user()->createToken('access_token')->accessToken;
-                    return redirect('http://forum.theme.com:8001')
-                        ->withCookie('forum_token', $token, config('session.lifetime'), config('session.path'), '.theme.com');
 
+                    return redirect(env('FORUM_URL'))
+                        ->withCookie(env('FORUM_TOKEN_NAME'), $token, config('session.lifetime'), config('session.path'), env('FORUM_DOMAIN'));
                 }
             }
+
             return redirect('/dashboard');
         }
 

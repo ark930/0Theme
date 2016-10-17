@@ -16,7 +16,7 @@
             <a>Themes</a>
             <a>ZEN</a>
             <a>Pricing</a>
-            <a>Forum</a>
+            <a href="{{ env('FORUM_URL') }}">Forum</a>
         </div>
 
         @if(!Auth::guest())

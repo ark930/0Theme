@@ -65,7 +65,7 @@ class LoginController extends Controller
         $request->session()->regenerate();
 
         return redirect('/login')
-            ->withCookie(Cookie::forget('forum_token', config('session.path'), config('session.domain')));
+            ->withCookie(Cookie::forget(env('FORUM_TOKEN_NAME'), config('session.path'), env('FORUM_DOMAIN')));
     }
 
     /**
@@ -90,10 +90,10 @@ class LoginController extends Controller
         }
 
         $token = $user->createToken('access_token')->accessToken;
-        $request->session()->put('forum_token', $token);
+        $request->session()->put(env('FORUM_TOKEN_NAME'), $token);
         $config = config('session');
 
         return redirect()->intended($this->redirectPath())
-            ->withCookie('forum_token', $token, $config['lifetime'], $config['path'], $config['domain'], $config['secure'], false);
+            ->withCookie(env('FORUM_TOKEN_NAME'), $token, $config['lifetime'], $config['path'], env('FORUM_DOMAIN'), $config['secure'], false);
     }
 }

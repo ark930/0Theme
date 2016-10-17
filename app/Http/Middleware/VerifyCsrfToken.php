@@ -35,11 +35,11 @@ class VerifyCsrfToken extends BaseVerifier
             )
         );
 
-        if($request->session()->has('forum_token')) {
+        if($request->session()->has(env('FORUM_TOKEN_NAME'))) {
             $response->headers->setCookie(
                 new Cookie(
-                    'forum_token', $request->session()->get('forum_token'), Carbon::now()->getTimestamp() + 60 * $config['lifetime'],
-                    $config['path'], $config['domain'], $config['secure'], false
+                    env('FORUM_TOKEN_NAME'), $request->session()->get(env('FORUM_TOKEN_NAME')), Carbon::now()->getTimestamp() + 60 * $config['lifetime'],
+                    $config['path'], env('FORUM_DOMAIN'), $config['secure'], false
                 )
             );
         }
