@@ -44,9 +44,9 @@ class LoginController extends Controller
      */
     public function showLoginForm(Request $request)
     {
-        $target = $request->input('target');
+        $redirect = $request->input('redirect');
 
-        return view('dashboard.login', compact('target'));
+        return view('dashboard.login', compact('redirect'));
     }
 
     /**

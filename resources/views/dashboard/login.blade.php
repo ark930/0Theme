@@ -21,8 +21,8 @@
                     </span>
                     @endif
 
-                    @if(null != $target)
-                        <input type="hidden" name="target" value="{{ $target }}">
+                    @if(null != $redirect)
+                        <input type="hidden" name="redirect" value="{{ $redirect }}">
                     @endif
                     <label>
                         <input type="checkbox" name="remember" class="checkbox"> <span>Stay Logged In</span>
