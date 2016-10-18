@@ -81,8 +81,8 @@ class LoginController extends Controller
         $user->saveLoginInfo($request->ip());
         event(new LogEvent($request->ip(), $this->guard()->user(), LogEvent::LOGIN));
 
-        if($request->has('target') && strtolower($request->input('target')) == 'forum') {
-            $this->redirectTo = env('FORUM_URL');
+        if($request->has('redirect')) {
+            $this->redirectTo = $request->input('redirect');
         } else if($user->isRegisterConfirmed() == false) {
             redirect()->intended('/register/confirm');
         } else if($user->isFreeUser() == true) {

@@ -19,10 +19,10 @@ class RedirectIfAuthenticated
     {
         if (Auth::guard($guard)->check()) {
             if($request->path() == 'login') {
-                if ($request->has('target') && strtolower($request->input( 'target' )) == 'forum') {
+                if($request->has('redirect')) {
                     $token = Auth::user()->createToken('access_token')->accessToken;
 
-                    return redirect(env('FORUM_URL'))
+                    return redirect($request->input('redirect'))
                         ->withCookie(env('FORUM_TOKEN_NAME'), $token, config('session.lifetime'), config('session.path'), env('FORUM_DOMAIN'));
                 }
             }

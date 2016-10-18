@@ -69,3 +69,15 @@ Route::group(['middleware' => ['auth']], function() {
 // for testing
 Route::get('/payment/experience/create', 'PaymentController@createExperience');
 Route::post('/payment/refund', 'PaymentController@refund');
+
+Route::get('/redirect', function () {
+    $query = http_build_query([
+        'client_id' => '3',
+        'redirect_uri' => 'http://forum.theme.com:8001/',
+        'response_type' => 'code',
+        'scope' => '',
+    ]);
+
+    return redirect('http://theme.com:8001/oauth/authorize?'.$query);
+});
+
