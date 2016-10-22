@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Repositories\UserRepository;
 use Closure;
 use Auth;
 
@@ -11,7 +12,8 @@ class RegisterConfirmCheck
     {
         if (Auth::guard($guard)->check()) {
             $user = Auth::user();
-            if($user->isRegisterConfirmed() == false) {
+            $userRepository = new UserRepository();
+            if($userRepository->isRegisterConfirmed($user) == false) {
                 return redirect('/register/confirm');
             }
         }

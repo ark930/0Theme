@@ -9,31 +9,39 @@ class PlanHandler
 {
     public static function canHaveBasicPlan(User $user)
     {
-        return !$user->isLifetimeUser();
+        $userRepository = new UserRepository;
+
+        return !$userRepository->isLifetimeUser($user);
     }
 
     public static function canHaveProPlan(User $user)
     {
-        return !$user->isLifetimeUser();
+        $userRepository = new UserRepository;
+
+        return !$userRepository->isLifetimeUser($user);
     }
 
     public static function canHaveLifetimePlan(User $user)
     {
-        return !$user->isLifetimeUser();
+        $userRepository = new UserRepository;
+
+        return !$userRepository->isLifetimeUser($user);
     }
 
     public static function doBasicPlan(User $user, $product)
     {
+        $userRepository = new UserRepository;
+
         if(self::canHaveBasicPlan($user)) {
-            if(!$user->isAdvanceUser()) {
-                $user->membershipToBasic();
+            if(!$userRepository->isAdvanceUser($user)) {
+                $userRepository->membershipToBasic($user);
             }
 
             $theme = $product->theme;
             $userTheme = $user->themes->where('id', $theme['id'])->first();
 
             if(empty($userTheme)) {
-                if($user->isProUser()) {
+                if($userRepository->isProUser($user)) {
                     $pro_from = $user['pro_from'];
                     $pro_to = $user['pro_to'];
                     $period = self::calculatePeriod($pro_from, $pro_to);
@@ -47,7 +55,7 @@ class PlanHandler
             } else {
                 $basic_from = $userTheme->pivot['basic_from'];
                 $basic_to = $userTheme->pivot['basic_to'];
-                if($user->isProUser() && strtotime($user['pro_to']) > strtotime($basic_to)) {
+                if($userRepository->isProUser($user) && strtotime($user['pro_to']) > strtotime($basic_to)) {
                     $pro_to = $user['pro_to'];
                     $period = self::calculatePeriod($basic_from, $pro_to);
                 } else {
@@ -64,9 +72,11 @@ class PlanHandler
 
     public static function doProPlan(User $user)
     {
+        $userRepository = new UserRepository;
+
         if(self::canHaveProPlan($user)) {
-            if(!$user->isLifetimeUser()) {
-                $user->membershipToPro();
+            if(!$userRepository->isLifetimeUser($user)) {
+                $userRepository->membershipToPro($user);
             }
 
             $period = self::calculatePeriod($user['pro_from'], $user['pro_to']);
@@ -78,8 +88,10 @@ class PlanHandler
 
     public static function doLifetimePlan(User $user)
     {
+        $userRepository = new UserRepository;
+
         if(self::canHaveLifetimePlan($user)) {
-            $user->membershipToLifetime();
+            $userRepository->membershipToLifetime($user);
         }
     }
 

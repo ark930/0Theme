@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Events\LogEvent;
 use App\Http\Controllers\Controller;
+use App\Repositories\UserRepository;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
@@ -30,8 +31,12 @@ class LoginController extends Controller
      */
     protected $redirectTo = '/dashboard';
 
-    public function __construct()
+    protected $userRepository;
+
+    public function __construct(UserRepository $userRepository)
     {
+        $this->userRepository = $userRepository;
+
         $this->middleware('guest', ['except' => 'logout']);
     }
 
@@ -78,14 +83,14 @@ class LoginController extends Controller
      */
     protected function authenticated(Request $request, $user)
     {
-        $user->saveLoginInfo($request->ip());
+        $this->userRepository->saveLoginInfo($user, $request->ip());
         event(new LogEvent($request->ip(), $this->guard()->user(), LogEvent::LOGIN));
 
         if($request->has('redirect')) {
             $this->redirectTo = $request->input('redirect');
-        } else if($user->isRegisterConfirmed() == false) {
+        } else if($this->userRepository->isRegisterConfirmed($user) == false) {
             redirect()->intended('/register/confirm');
-        } else if($user->isFreeUser() == true) {
+        } else if($this->userRepository->isFreeUser($user) == true) {
             $this->redirectTo = '/plan';
         }
 

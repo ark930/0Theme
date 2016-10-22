@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\User;
+use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,7 +19,7 @@ class PlanController extends Controller
         return view('dashboard.plan', compact('basicProduct', 'proProduct', 'lifetimeProduct'));
     }
 
-    public function showPlanDetails(Request $request, $membership)
+    public function showPlanDetails(Request $request, $membership, UserRepository $userRepository)
     {
         $membership = strtolower($membership);
 
@@ -77,7 +78,7 @@ class PlanController extends Controller
             $lifetimeProduct = Product::getLifetimeProduct();
 
             $price = $proProduct['price'];
-            if($user->isBasicUser()) {
+            if($userRepository->isBasicUser($user)) {
                 $basicProduct = Product::getBasicProduct();
                 $price -= $basicProduct['price'];
             }

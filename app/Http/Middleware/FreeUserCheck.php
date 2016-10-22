@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Repositories\UserRepository;
 use Closure;
 use Auth;
 
@@ -11,7 +12,8 @@ class FreeUserCheck
     {
         if (Auth::guard($guard)->check()) {
             $user = Auth::user();
-            if($user->isFreeUser() == true) {
+            $userRepository = new UserRepository();
+            if($userRepository->isFreeUser($user) == true) {
                 return redirect('/plan');
             }
         }

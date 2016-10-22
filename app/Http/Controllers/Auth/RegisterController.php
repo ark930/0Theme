@@ -6,6 +6,7 @@ use App\Events\LogEvent;
 use App\Models\ForumUser;
 use App\Notifications\ConfirmRegisterNotification;
 use App\Models\User;
+use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Validator;
@@ -34,13 +35,17 @@ class RegisterController extends Controller
      */
     protected $redirectTo = '/dashboard';
 
+    protected $userRepository;
+
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(UserRepository $userRepository)
     {
+        $this->userRepository = $userRepository;
+
         $this->middleware('guest', ['except' => ['registerConfirmPage', 'registerConfirmWithCode']]);
     }
 
@@ -97,7 +102,7 @@ class RegisterController extends Controller
     public function registerConfirmPage()
     {
         $user = Auth::user();
-        if(!empty($user) && $user->isRegisterConfirmed()) {
+        if(!empty($user) && $this->userRepository->isRegisterConfirmed($user)) {
             return redirect($this->redirectTo);
         }
 
@@ -117,7 +122,7 @@ class RegisterController extends Controller
     public function registerConfirmWithCode(Request $request, $confirm_code)
     {
         $user = Auth::user();
-        if(!empty($user) && $user->isRegisterConfirmed()) {
+        if(!empty($user) && $this->userRepository->isRegisterConfirmed($user)) {
             return redirect($this->redirectTo);
         }
 
@@ -128,7 +133,7 @@ class RegisterController extends Controller
         } else if(!empty($user['register_at'])) {
             return view('errors.message', ['error' => 'This url is expired or invalid.']);
         } else {
-            $user->saveRegisterInfo($request->ip());
+            $this->userRepository->saveRegisterInfo($user, $request->ip());
             event(new LogEvent($request->ip(), $user, LogEvent::REGISTER_CONFIRM));
 
             // logout
@@ -163,6 +168,6 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::newUser($data);
+        return $this->userRepository->newUser($data);
     }
 }

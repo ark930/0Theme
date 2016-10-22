@@ -9,12 +9,13 @@ use App\Models\User;
 use App\Repositories\OrderHandler;
 use App\Repositories\PayPal;
 use App\Repositories\PlanHandler;
+use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class PaymentController extends Controller
 {
-    public function create(Request $request, PayPal $payPal)
+    public function create(Request $request, PayPal $payPal, UserRepository $userRepository)
     {
         $this->validate($request, [
             'productId' => 'required|integer',
@@ -38,7 +39,7 @@ class PaymentController extends Controller
         }
 
         $user = Auth::user();
-        if($user->isLifetimeUser()) {
+        if($userRepository->isLifetimeUser($user)) {
             return response()->json([
                 'error' => 'You are already a LIFETIME user',
             ], 400);
@@ -103,18 +104,20 @@ class PaymentController extends Controller
             'account' => $user['email'],
             'total' => $order['paid_amount'],
         ];
+
+        $planHandler = new PlanHandler();
         if($product['type'] == Product::TYPE_LIFETIME) {
-            PlanHandler::doLifetimePlan($user);
+            $planHandler::doLifetimePlan($user);
 
             $data['membership'] = User::MEMBERSHIP_LIFETIME;
             $data['period'] = 'Forever';
         } else if($product['type'] == Product::TYPE_PRO) {
-            PlanHandler::doProPlan($user);
+            $planHandler::doProPlan($user);
 
             $data['membership'] = User::MEMBERSHIP_PRO;
             $data['period'] = '1 Year';
         } else if($product['type'] == Product::TYPE_THEME) {
-            PlanHandler::doBasicPlan($user, $product);
+            $planHandler::doBasicPlan($user, $product);
 
             $data['membership'] = User::MEMBERSHIP_BASIC;
             $data['period'] = '1 Year';

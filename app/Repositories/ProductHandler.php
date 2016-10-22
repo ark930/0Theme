@@ -10,7 +10,8 @@ class ProductHandler
 
     public function canDiscount(User $user, Product $product)
     {
-        if($user->isBasicUser() && $product->isProProduct()) {
+        $userRepository = new UserRepository();
+        if($userRepository->isBasicUser($user) && $product->isProProduct()) {
             return true;
         }
 

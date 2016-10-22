@@ -5,30 +5,25 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Theme;
+use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cookie;
 
 class MainController extends Controller
 {
-    public function dashboard(Request $request)
+    public function dashboard(Request $request, UserRepository $userRepository)
     {
         $user = Auth::user();
-//        $request->session()->set('user', $user);
-//        dd($request->session());
-        $token = $user->createToken('Token Name')->accessToken;
-//dd($token);
         $orders = $user->orders->where('status', Order::PAID)->all();
 //        $orders = $user->orders;
         $themes = [];
-        if($user->isAdvanceUser()) {
+        if($userRepository->isAdvanceUser($user)) {
             $themes =  Theme::all();
-        } else if($user->isBasicUser()) {
+        } else if($userRepository->isBasicUser($user)) {
             $themes = $user->themes;
         }
 
-        return response()->view('dashboard.main' , compact('user', 'orders', 'themes'))
-            ->withCookie(Cookie::forget('flarum_session'));
+        return response()->view('dashboard.main' , compact('user', 'orders', 'themes'));
     }
 
     public function theme()

@@ -5,6 +5,7 @@
 @endsection
 
 @section('content')
+    @inject('userRepository', 'App\Repositories\UserRepository')
     <div class="content page-user">
         <div class="left">
             <div class="top">
@@ -39,13 +40,12 @@
                         <h3>{{ $user['pro_to'] }}</h3>
                     </div>
                 @endif
-
-                @if($user->isFreeUser())
+                @if($userRepository->isFreeUser($user))
                     <div class="form-group link">
                         <a href="{{ url('/plan') }}" class="button line">Choose A Plan</a>
                     </div>
                 @else
-                    @if($user->isBasicUser())
+                    @if($userRepository->isBasicUser($user))
                         <div class="form-group link">
                             <!--renew 在basic上是没有的-->
                             <!--<a href="#" class="button">Renew</a>-->
@@ -61,7 +61,7 @@
                         </div>
                     @endif
 
-                    @if(!$user->isLifetimeUser())
+                    @if(!$userRepository->isLifetimeUser($user))
                         <div class="form-group link">
                             <a href="{{ url('/plan/lifetime') }}" class="button line">Upgrade to Lifetime ($249）</a>
                         </div>
@@ -95,7 +95,7 @@
                         @endforeach
                         </tbody>
                     </table>
-                @elseif($user->isAdvanceUser())
+                @elseif($userRepository->isAdvanceUser($user))
                     <table>
                         <tbody>
                         @foreach($themes as $theme)
