@@ -26,7 +26,7 @@ use Exception;
 
 class PayPal
 {
-    private $apiContext;
+    protected $apiContext;
 
     public function __construct()
     {

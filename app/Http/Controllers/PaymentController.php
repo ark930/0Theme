@@ -15,6 +15,13 @@ use Illuminate\Support\Facades\Auth;
 
 class PaymentController extends Controller
 {
+    protected $orderHandler;
+
+    public function __construct(OrderHandler $orderHandler)
+    {
+        $this->orderHandler = $orderHandler;
+    }
+
     public function create(Request $request, PayPal $payPal, UserRepository $userRepository)
     {
         $this->validate($request, [
@@ -52,13 +59,13 @@ class PaymentController extends Controller
 //            }
 //        }
 
-        $order = OrderHandler::create($user, $product, $paymentType);
+        $order = $this->orderHandler->create($user, $product, $paymentType);
 
         $successUrl = sprintf('%s/%s?oid=%s', $request->root(), 'payment/success', $order['order_no']);
         $failUrl = sprintf('%s/%s?oid=%s', $request->root(), 'payment/fail', $order['order_no']);
 
         $payment = $payPal->createPaymentUsingPayPal($product['name'], $order['order_no'], $order['pay_amount'], $successUrl, $failUrl);
-        OrderHandler::savePayPalPayment($order, $payment);
+        $this->orderHandler->savePayPalPayment($order, $payment);
 
         return response()->json([
             'approveUrl' => $payment->getApprovalLink(),
@@ -94,7 +101,7 @@ class PaymentController extends Controller
         $total = $payPalPayment['amount'];
         $payment = $payPal->executePayment($paymentId, $payerId, $total);
 
-        $order = OrderHandler::paid($payerId, $payPalPayment, $payment);
+        $order = $this->orderHandler->paid($payerId, $payPalPayment, $payment);
 
         $product = $order->product;
         $user = $order->user;
