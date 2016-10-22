@@ -8,8 +8,8 @@ use App\Models\Product;
 use App\Models\User;
 use App\Repositories\OrderHandler;
 use App\Repositories\PayPal;
-use App\Repositories\PlanHandler;
 use App\Repositories\UserRepository;
+use App\Services\PlanService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -65,7 +65,7 @@ class PaymentController extends Controller
         ]);
     }
 
-    public function paySuccess(Request $request, PayPal $payPal)
+    public function paySuccess(Request $request, PayPal $payPal, PlanService $planService)
     {
         $this->validate($request, [
             'oid' => 'required',
@@ -105,19 +105,18 @@ class PaymentController extends Controller
             'total' => $order['paid_amount'],
         ];
 
-        $planHandler = new PlanHandler();
         if($product['type'] == Product::TYPE_LIFETIME) {
-            $planHandler::doLifetimePlan($user);
+            $planService->doLifetimePlan($user);
 
             $data['membership'] = User::MEMBERSHIP_LIFETIME;
             $data['period'] = 'Forever';
         } else if($product['type'] == Product::TYPE_PRO) {
-            $planHandler::doProPlan($user);
+            $planService->doProPlan($user);
 
             $data['membership'] = User::MEMBERSHIP_PRO;
             $data['period'] = '1 Year';
         } else if($product['type'] == Product::TYPE_THEME) {
-            $planHandler::doBasicPlan($user, $product);
+            $planService->doBasicPlan($user, $product);
 
             $data['membership'] = User::MEMBERSHIP_BASIC;
             $data['period'] = '1 Year';
