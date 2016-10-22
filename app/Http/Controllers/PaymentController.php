@@ -6,7 +6,7 @@ use App\Models\Order;
 use App\Models\PayPalPayment;
 use App\Models\Product;
 use App\Models\User;
-use App\Repositories\OrderHandler;
+use App\Repositories\OrderService;
 use App\Repositories\PayPal;
 use App\Repositories\UserRepository;
 use App\Services\PlanService;
@@ -15,11 +15,11 @@ use Illuminate\Support\Facades\Auth;
 
 class PaymentController extends Controller
 {
-    protected $orderHandler;
+    protected $orderService;
 
-    public function __construct(OrderHandler $orderHandler)
+    public function __construct(OrderService $orderService)
     {
-        $this->orderHandler = $orderHandler;
+        $this->orderService = $orderService;
     }
 
     public function create(Request $request, PayPal $payPal, UserRepository $userRepository)
@@ -59,13 +59,13 @@ class PaymentController extends Controller
 //            }
 //        }
 
-        $order = $this->orderHandler->create($user, $product, $paymentType);
+        $order = $this->orderService->create($user, $product, $paymentType);
 
         $successUrl = sprintf('%s/%s?oid=%s', $request->root(), 'payment/success', $order['order_no']);
         $failUrl = sprintf('%s/%s?oid=%s', $request->root(), 'payment/fail', $order['order_no']);
 
         $payment = $payPal->createPaymentUsingPayPal($product['name'], $order['order_no'], $order['pay_amount'], $successUrl, $failUrl);
-        $this->orderHandler->savePayPalPayment($order, $payment);
+        $this->orderService->savePayPalPayment($order, $payment);
 
         return response()->json([
             'approveUrl' => $payment->getApprovalLink(),
@@ -101,7 +101,7 @@ class PaymentController extends Controller
         $total = $payPalPayment['amount'];
         $payment = $payPal->executePayment($paymentId, $payerId, $total);
 
-        $order = $this->orderHandler->paid($payerId, $payPalPayment, $payment);
+        $order = $this->orderService->paid($payerId, $payPalPayment, $payment);
 
         $product = $order->product;
         $user = $order->user;
