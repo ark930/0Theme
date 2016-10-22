@@ -32,34 +32,11 @@ class PaymentController extends Controller
         $productId = $request->input('productId');
         $paymentType = $request->input('paymentType');
 
-        $product = Product::find($productId);
-        if(empty($product)) {
-            if(Product::THEME_PRODUCT_ID == $product['id']) {
-                return response()->json([
-                    'error' => 'Please select a theme',
-                ], 400);
-            } else {
-                return response()->json([
-                    'error' => 'Illegal parameters',
-                ], 400);
-            }
-        }
-
         $user = Auth::user();
-        if($userRepository->isLifetimeUser($user)) {
-            return response()->json([
-                'error' => 'You are already a LIFETIME user',
-            ], 400);
-        }
-//        else if($user->isProUser()) {
-//            if($product['type'] != Product::TYPE_LIFETIME) {
-//                return response()->json([
-//                    'error' => 'You are already a PRO user',
-//                ], 400);
-//            }
-//        }
 
-        $order = $this->orderService->create($user, $product, $paymentType);
+        $product = Product::find($productId);
+
+        $order = $this->orderService->create($user, $productId, $paymentType);
 
         $successUrl = sprintf('%s/%s?oid=%s', $request->root(), 'payment/success', $order['order_no']);
         $failUrl = sprintf('%s/%s?oid=%s', $request->root(), 'payment/fail', $order['order_no']);

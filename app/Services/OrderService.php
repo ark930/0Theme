@@ -2,25 +2,47 @@
 
 namespace App\Services;
 
+use App\Exceptions\ServiceException;
 use App\Models\Order;
 use App\Repositories\OrderRepository;
 use App\Repositories\PayPalPaymentRepository;
 use App\Repositories\ProductHandler;
+use App\Repositories\ProductRepository;
+use App\Repositories\UserRepository;
 use PayPal\Api\Payment;
 
 class OrderService
 {
     protected $palPaymentRepository;
     protected $orderRepository;
+    protected $productRepository;
+    protected $userRepository;
 
-    public function __construct(OrderRepository $orderRepository, PayPalPaymentRepository $palPaymentRepository)
+    public function __construct(OrderRepository $orderRepository, PayPalPaymentRepository $palPaymentRepository,
+        ProductRepository $productRepository, UserRepository $userRepository)
     {
         $this->orderRepository = $orderRepository;
         $this->palPaymentRepository = $palPaymentRepository;
+        $this->productRepository = $productRepository;
+        $this->userRepository = $userRepository;
     }
 
-    public function create($user, $product, $paymentType)
+    public function create($user, $productId, $paymentType)
     {
+        $product = $this->productRepository->get($productId);
+
+        if(empty($product)) {
+            if($this->productRepository->isThemeProduct($product)) {
+                throw new ServiceException('Please select a theme', 400, true);
+            } else {
+                throw new ServiceException('Illegal parameters', 400, true);
+            }
+        }
+
+        if($this->userRepository->isLifetimeUser($user)) {
+            throw new ServiceException('You are already a LIFETIME user', 400, true);
+        }
+
         $price = $product['price'];
         $productHandler = new ProductHandler();
         if($productHandler->canDiscount($user, $product)) {

@@ -69,4 +69,11 @@ class PayPalPaymentRepository
 
         return $target;
     }
+
+    public function getByPaymentId($paymentId)
+    {
+        $payPalPayment = PayPalPayment::where('payment_id', $paymentId)->first();
+
+        return $payPalPayment;
+    }
 }

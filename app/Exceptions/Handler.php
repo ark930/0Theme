@@ -58,6 +58,14 @@ class Handler extends ExceptionHandler
             return $this->renderHttpException($exception);
         } else if ($exception instanceof TokenMismatchException) {
             return back()->withInput()->withErrors(['error' => 'Sorry, your session seems to have expired. Please try again.']);
+        } else if ($exception instanceof ServiceException) {
+            if($request->isJson() || $exception->isJson()) {
+                return response()->json([
+                    'error' => $exception->getMessage(),
+                ], $exception->getCode());
+            }
+
+            return back()->withInput()->withErrors(['error' => $exception->getMessage()]);
         }
 //        else if($exception instanceof Exception) {
 //            return back()->withErrors(['error' => 'Something wrong happened, please try again.']);

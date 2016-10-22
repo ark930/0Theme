@@ -43,4 +43,11 @@ class OrderRepository
     {
 
     }
+
+    public function getByOrderNo($orderNo)
+    {
+        $order = Order::where('order_no', $orderNo)->first();
+
+        return $order;
+    }
 }
