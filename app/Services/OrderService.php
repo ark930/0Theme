@@ -1,8 +1,11 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Services;
 
 use App\Models\Order;
+use App\Repositories\OrderRepository;
+use App\Repositories\PayPalPaymentRepository;
+use App\Repositories\ProductHandler;
 use PayPal\Api\Payment;
 
 class OrderService
@@ -31,7 +34,7 @@ class OrderService
 
     public function savePayPalPayment(Order $order, Payment $payment)
     {
-        $payPalPayment = $this->palPaymentRepository->createFromPayPalResponse($payment);
+        $payPalPayment = $this->palPaymentRepository->createFromPayPalResponse($order, $payment);
         $this->orderRepository->updateOrderWhenPayPalPaymentCreated($order, $payPalPayment);
     }
 

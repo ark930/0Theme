@@ -7,11 +7,12 @@ use App\Models\PayPalPayment;
 
 class PayPalPaymentRepository
 {
-    public function createFromPayPalResponse($payment)
+    public function createFromPayPalResponse($order, $payment)
     {
         $paymentDataArray = json_decode($payment, true);
 
         $payPalPaymentData = [];
+        $payPalPaymentData['order_id'] = $order['id'];
         $payPalPaymentData['payment_id'] = $paymentDataArray['id'];
         $payPalPaymentData['payment_method'] = $paymentDataArray['payer']['payment_method'];
         $payPalPaymentData['intent'] = $paymentDataArray['intent'];
