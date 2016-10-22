@@ -7,7 +7,6 @@ use App\Models\PayPalPayment;
 use App\Models\Product;
 use App\Models\User;
 use App\Repositories\PayPal;
-use App\Repositories\UserRepository;
 use App\Services\OrderService;
 use App\Services\PlanService;
 use Illuminate\Http\Request;
@@ -22,7 +21,7 @@ class PaymentController extends Controller
         $this->orderService = $orderService;
     }
 
-    public function create(Request $request, PayPal $payPal, UserRepository $userRepository)
+    public function create(Request $request)
     {
         $this->validate($request, [
             'productId' => 'required|integer',
@@ -34,18 +33,10 @@ class PaymentController extends Controller
 
         $user = Auth::user();
 
-        $product = Product::find($productId);
-
-        $order = $this->orderService->create($user, $productId, $paymentType);
-
-        $successUrl = sprintf('%s/%s?oid=%s', $request->root(), 'payment/success', $order['order_no']);
-        $failUrl = sprintf('%s/%s?oid=%s', $request->root(), 'payment/fail', $order['order_no']);
-
-        $payment = $payPal->createPaymentUsingPayPal($product['name'], $order['order_no'], $order['pay_amount'], $successUrl, $failUrl);
-        $this->orderService->savePayPalPayment($order, $payment);
+        $approvalLink = $this->orderService->create($user, $productId, $paymentType, $request->root());
 
         return response()->json([
-            'approveUrl' => $payment->getApprovalLink(),
+            'approvalLink' => $approvalLink,
         ]);
     }
 
