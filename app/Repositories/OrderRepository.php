@@ -23,6 +23,14 @@ class OrderRepository
         return $order;
     }
 
+    public function updateOrderWhenPayFail($order)
+    {
+        $order['status'] = Order::CANCELLED;
+        $order->save();
+
+        return $order;
+    }
+
     public function create($user, $product, $price, $paymentType)
     {
         $order = new Order();

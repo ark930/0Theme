@@ -48,9 +48,9 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('/plan/{membership}', 'PlanController@showPlanDetails')->where('membership', 'basic|pro|lifetime');
 
         // Payment Routes
-        Route::post('/payment/create', 'PaymentController@create');
-        Route::get('/payment/success', 'PaymentController@paySuccess');
-        Route::get('/payment/fail', 'PaymentController@payFail');
+        Route::post('/payment/create', 'PaymentController@paymentCreate');
+        Route::get('/payment/success', 'PaymentController@paymentSuccess');
+        Route::get('/payment/fail', 'PaymentController@paymentFailure');
         Route::get('/payment/sale', 'PaymentController@getSale');
 
         // Dashboard Routes
